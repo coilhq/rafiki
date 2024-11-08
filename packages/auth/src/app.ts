@@ -421,6 +421,7 @@ export class App {
 
     const router = new Router<DefaultState, AppContext>()
     router.use(bodyParser())
+    router.use(gnapServerErrorMiddleware)
 
     const openApi = await this.container.use('openApi')
     const interactionRoutes = await this.container.use('interactionRoutes')
