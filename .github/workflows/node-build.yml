@@ -302,7 +302,7 @@ jobs:
         run: |
           docker images
       - name: Scan docker image
-        uses: anchore/scan-action@v3
+        uses: anchore/scan-action@v6
         with:
           image: /tmp/${{ github.sha }}-${{ matrix.package }}-${{ matrix.platform.name }}-${{ needs.version-generator.outputs.version }}.tar
           fail-build: true
