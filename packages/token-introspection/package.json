@@ -28,6 +28,6 @@
     "@interledger/open-payments": "6.13.2",
     "@interledger/openapi": "2.0.1",
     "axios": "^1.7.9",
-    "pino": "^8.19.0"
+    "pino": "^9.6.0"
   }
 }
