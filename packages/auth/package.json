@@ -22,7 +22,7 @@
     "dev": "ts-node-dev --inspect=0.0.0.0:9229 --respawn --transpile-only src/index.ts"
   },
   "dependencies": {
-    "@adonisjs/fold": "^8.2.0",
+    "@adonisjs/fold": "^10.1.3",
     "@apollo/server": "^4.11.2",
     "@as-integrations/koa": "^1.1.1",
     "@escape.tech/graphql-armor": "^2.4.0",
