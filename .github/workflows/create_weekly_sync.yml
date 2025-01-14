@@ -9,7 +9,7 @@ jobs:
     create-discussion:
         permissions:
             discussions: write
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         steps:
             - name: Get repository information
               id: get-repository-info
