@@ -43,7 +43,7 @@
     "knex": "^3.1.0",
     "koa": "^2.15.3",
     "koa-bodyparser": "^4.4.1",
-    "koa-session": "^6.4.0",
+    "koa-session": "^7.0.2",
     "objection": "^3.1.5",
     "objection-db-errors": "^1.1.2",
     "pg": "^8.11.3",
