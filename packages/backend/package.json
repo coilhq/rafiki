@@ -79,7 +79,7 @@
     "extensible-error": "^1.0.2",
     "graphql": "^16.8.1",
     "graphql-middleware": "^6.1.35",
-    "graphql-scalars": "^1.23.0",
+    "graphql-scalars": "^1.24.1",
     "ilp-packet": "3.1.4-alpha.2",
     "ilp-protocol-ccp": "^1.2.4-alpha.2",
     "ilp-protocol-ildcp": "^2.2.4-alpha.2",
