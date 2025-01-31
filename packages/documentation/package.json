@@ -19,6 +19,6 @@
     "rehype-autolink-headings": "^7.1.0",
     "rehype-mathjax": "^6.0.0",
     "remark-math": "^6.0.0",
-    "starlight-links-validator": "^0.14.1"
+    "starlight-links-validator": "^0.14.2"
   }
 }
