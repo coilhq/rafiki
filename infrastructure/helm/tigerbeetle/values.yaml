@@ -32,7 +32,7 @@ statefulset:
     repository: nginx
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "1.25.4" 
+    tag: "1.27.4" 
 
   replicas: 6
   updateStrategy:
