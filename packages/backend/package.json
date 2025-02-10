@@ -96,7 +96,7 @@
     "pg": "^8.11.3",
     "pino": "^8.19.0",
     "raw-body": "^2.5.2",
-    "tigerbeetle-node": "0.15.4",
+    "tigerbeetle-node": "0.16.27",
     "token-introspection": "workspace:*",
     "uuid": "^9.0.1"
   }
