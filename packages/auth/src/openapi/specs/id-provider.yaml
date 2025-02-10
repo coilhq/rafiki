@@ -39,6 +39,16 @@ paths:
               description: Interaction id
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gnap-error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gnap-error'
       operationId: get-interact
       parameters:
         - schema:
@@ -89,9 +99,17 @@ paths:
               description: Client finish endpoint
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gnap-error'
         '404':
           description: Not Found
-      description: "This endpoint is called by the identity provider to end the user interaction and redirect the user to the client's finish URL."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gnap-error'
+      description: "To finish the user interaction for grant approval, this endpoint redirects the user to the client's finish url."
       parameters:
         - schema:
             type: string
@@ -136,8 +154,16 @@ paths:
                     type: string
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gnap-error'
         '404':
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gnap-error'
       operationId: get-grant
       description: |
         This endpoint is called by the identity provider to get the grant details associated with the `interactId` on the front-channel. The identity provider will display the details to the user to either accept or deny.
@@ -165,11 +191,23 @@ paths:
           description: Accepted
         '400':
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gnap-error'
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gnap-error'
         '404':
           description: Not Found
-      description: This endpoint is called by the identity provider to communicate the user's choice (acceptance or rejection) to the authorization server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gnap-error'
+      description: The Identity Provider uses this endpoint to submit the user's choice regarding accepting or rejecting a grant to Authorization Server.
       parameters:
         - schema:
             type: string
@@ -195,7 +233,27 @@ paths:
       tags:
         - back-channel
 components:
-  schemas: {}
+  schemas:
+    gnap-error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            description:
+              type: string
+            code:
+              type: string
+              enum:
+                - invalid_request
+                - invalid_client
+                - invalid_interaction
+                - invalid_rotation
+                - invalid_continuation
+                - user_denied
+                - request_denied
+                - unknown_interaction
+                - too_fast
   securitySchemes:
     GNAP:
       name: Authorization
