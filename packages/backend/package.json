@@ -30,7 +30,7 @@
     "@types/luxon": "^3.4.2",
     "@types/rosie": "^0.0.45",
     "@types/tmp": "^0.2.6",
-    "@types/uuid": "^9.0.8",
+    "@types/uuid": "^10.0.0",
     "cross-fetch": "^4.1.0",
     "ilp-protocol-stream": "^2.7.2-alpha.2",
     "jest-environment-node": "^29.7.0",

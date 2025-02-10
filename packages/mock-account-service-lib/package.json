@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.7.12",
-    "@types/uuid": "^9.0.8"
+    "@types/uuid": "^10.0.0"
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",

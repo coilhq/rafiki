@@ -64,7 +64,7 @@
     "@types/koa-session": "^6.4.5",
     "@types/koa__cors": "^5.0.0",
     "@types/koa__router": "^12.0.4",
-    "@types/uuid": "^9.0.8",
+    "@types/uuid": "^10.0.0",
     "cross-fetch": "^4.1.0",
     "jest-openapi": "^0.14.2",
     "nock": "14.0.0-beta.19",
