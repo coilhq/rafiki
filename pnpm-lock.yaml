@@ -600,11 +600,11 @@ importers:
         specifier: ^1.7.19
         version: 1.7.19(react-dom@18.2.0)(react@18.2.0)
       '@ory/client':
-        specifier: ^1.9.0
-        version: 1.9.0
+        specifier: ^1.16.6
+        version: 1.16.6
       '@ory/integrations':
         specifier: ^1.1.5
-        version: 1.1.5(@ory/client@1.9.0)(next@15.1.7)
+        version: 1.1.5(@ory/client@1.16.6)(next@15.1.7)
       '@remix-run/node':
         specifier: ^2.15.3
         version: 2.15.3(typescript@5.7.3)
@@ -6505,21 +6505,21 @@ packages:
       '@opentelemetry/core': 1.22.0(@opentelemetry/api@1.8.0)
     dev: false
 
-  /@ory/client@1.9.0:
-    resolution: {integrity: sha512-O4a1ijgJtMNIA+ZmWUmCodxX13ID72hOaCB0b9FQGQBzuFgF2x/Yq5D43nrMYZaDtvDvja8J1XIXhUkjz1TDOw==}
+  /@ory/client@1.16.6:
+    resolution: {integrity: sha512-HM/+FjWX0y4kxskUzE0uvF6J4ke7q8UVz3+LSx8xC726+McaFvxHTy9Mh8rB6e37rbev5f4SWxzsneNeces8OA==}
     dependencies:
       axios: 1.7.9(debug@4.3.2)
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@ory/integrations@1.1.5(@ory/client@1.9.0)(next@15.1.7):
+  /@ory/integrations@1.1.5(@ory/client@1.16.6)(next@15.1.7):
     resolution: {integrity: sha512-UV58IuQd2ofPMzeQ5iCWjhLi3cn3+ZHueKy7XSfdeM+x2vfx9E2mr3WBicI7DrYKTDRuDaHbTZ3dNJUgW9yAlA==}
     peerDependencies:
       '@ory/client': '>1.1.38'
       next: '>=12.0.10'
     dependencies:
-      '@ory/client': 1.9.0
+      '@ory/client': 1.16.6
       '@types/tldjs': 2.3.1
       cookie: 0.5.0
       istextorbinary: 6.0.0

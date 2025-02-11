@@ -15,7 +15,7 @@
   "dependencies": {
     "@apollo/client": "^3.11.8",
     "@headlessui/react": "^1.7.19",
-    "@ory/client": "^1.9.0",
+    "@ory/client": "^1.16.6",
     "@ory/integrations": "^1.1.5",
     "@remix-run/node": "^2.15.3",
     "@remix-run/react": "^2.15.3",
