@@ -20,7 +20,7 @@
     "test:sincemain:cov": "pnpm test:sincemain --coverage"
   },
   "devDependencies": {
-    "@types/node": "^18.7.12",
+    "@types/node": "^18.19.75",
     "nock": "^13.5.6",
     "openapi-typescript": "^6.7.6"
   },
