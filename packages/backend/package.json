@@ -98,6 +98,6 @@
     "raw-body": "^2.5.2",
     "tigerbeetle-node": "0.15.4",
     "token-introspection": "workspace:*",
-    "uuid": "^9.0.1"
+    "uuid": "^11.0.5"
   }
 }

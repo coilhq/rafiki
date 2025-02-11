@@ -50,7 +50,7 @@
     "pino": "^8.19.0",
     "token-introspection": "workspace:*",
     "ts-node-dev": "^2.0.0",
-    "uuid": "^9.0.1"
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@apollo/client": "^3.11.8",

@@ -71,8 +71,8 @@ importers:
         specifier: ^5.4.3
         version: 5.4.3
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^11.0.5
+        version: 11.0.5
     dependenciesMeta:
       tigerbeetle-node:
         built: true
@@ -131,8 +131,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^11.0.5
+        version: 11.0.5
       yaml:
         specifier: ^2.7.0
         version: 2.7.0
@@ -249,8 +249,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0(@swc/core@1.9.0)(@types/node@18.19.64)(typescript@5.7.3)
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^11.0.5
+        version: 11.0.5
     devDependencies:
       '@apollo/client':
         specifier: ^3.11.8
@@ -472,8 +472,8 @@ importers:
         specifier: workspace:*
         version: link:../token-introspection
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^11.0.5
+        version: 11.0.5
     devDependencies:
       '@apollo/client':
         specifier: ^3.11.8
@@ -647,8 +647,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^11.0.5
+        version: 11.0.5
       yaml:
         specifier: ^2.7.0
         version: 2.7.0
@@ -720,8 +720,8 @@ importers:
         specifier: ^11.0.0
         version: 11.0.0
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^11.0.5
+        version: 11.0.5
     devDependencies:
       '@types/node':
         specifier: ^18.7.12
@@ -21506,6 +21506,10 @@ packages:
   /utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
+
+  /uuid@11.0.5:
+    resolution: {integrity: sha512-508e6IcKLrhxKdBbcA2b4KQZlLVp2+J5UwQ6F7Drckkc5N9ZJwFa4TgWtsww9UG8fGHbm6gbV19TdM5pQ4GaIA==}
+    hasBin: true
 
   /uuid@3.4.0:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
