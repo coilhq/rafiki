@@ -24,16 +24,15 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const sessionTenantId = session.get('tenantId')
 
   const { isOperator } = await whoami(request)
-  let tenantIds
+  let tenants
   if (isOperator) {
-    const tenantEdges = await loadTenants(request)
-    tenantIds = tenantEdges.map((edge) => edge.node.id)
+    tenants = await loadTenants(request)
   }
-  return json({ tenantIds, sessionTenantId })
+  return json({ tenants, sessionTenantId })
 }
 
 export default function CreateAssetPage() {
-  const { tenantIds, sessionTenantId } = useLoaderData<typeof loader>()
+  const { tenants, sessionTenantId } = useLoaderData<typeof loader>()
   const response = useActionData<typeof action>()
   const { state } = useNavigation()
   const isSubmitting = state === 'submitting'
@@ -81,11 +80,11 @@ export default function CreateAssetPage() {
                     label='Withdrawal Threshold'
                     error={response?.errors.fieldErrors.withdrawalThreshold}
                   />
-                  {tenantIds && (
+                  {tenants && (
                     <Dropdown
-                      options={tenantIds.map((tenantId) => ({
-                        label: tenantId,
-                        value: tenantId
+                      options={tenants.map((tenant) => ({
+                        label: tenant.node.id,
+                        value: `${tenant.node.id} ${tenant.node.publicName ? `(${tenant.node.publicName})` : ''}`
                       }))}
                       name='tenantId'
                       placeholder='Select tenant...'

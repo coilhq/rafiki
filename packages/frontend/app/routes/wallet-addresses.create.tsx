@@ -93,7 +93,7 @@ export default function CreateWalletAddressPage() {
                     <Select
                       options={tenants.map((tenant) => ({
                         value: tenant.node.id,
-                        label: `${tenant.node.id}`
+                        label: `${tenant.node.id} ${tenant.node.publicName ? `(${tenant.node.publicName})` : ''}`
                       }))}
                       name='tenantId'
                       placeholder='Select tenant...'
