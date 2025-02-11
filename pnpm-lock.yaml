@@ -19,7 +19,7 @@ overrides:
   '@grpc/grpc-js@>=1.10.0 <1.10.9': '>=1.10.9'
   dset@<3.1.4: '>=3.1.4'
   cross-spawn@>=7.0.0 <7.0.5: '>=7.0.5'
-  path-to-regexp@>=0.1.7: ^0.1.12
+  path-to-regexp@>=0.1.7: ^0.2.5
   path-to-regexp@>=6.3.0: ^6.3.0
 
 importers:
@@ -12637,7 +12637,7 @@ packages:
       methods: 1.1.2
       on-finished: 2.4.1
       parseurl: 1.3.3
-      path-to-regexp: 0.1.12
+      path-to-regexp: 0.2.5
       proxy-addr: 2.0.7
       qs: 6.13.0
       range-parser: 1.2.1
@@ -17964,8 +17964,8 @@ packages:
       minipass: 7.0.4
     dev: true
 
-  /path-to-regexp@0.1.12:
-    resolution: {integrity: sha512-RA1GjUVMnvYFxuqovrEqZoxxW5NUZqbwKtYz/Tt7nXerk0LbLblQmrsgdeOxV5SFHf0UDggjS/bSeOZwt1pmEQ==}
+  /path-to-regexp@0.2.5:
+    resolution: {integrity: sha512-l6qtdDPIkmAmzEO6egquYDfqQGPMRNGjYtrU13HAXb3YSRrt7HSb1sJY0pKp6o2bAa86tSB6iwaW2JbthPKr7Q==}
 
   /path-to-regexp@6.3.0:
     resolution: {integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==}
