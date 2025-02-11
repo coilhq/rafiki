@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@adonisjs/fold": "^8.2.0",
-    "@apollo/server": "^4.11.2",
+    "@apollo/server": "^4.11.3",
     "@as-integrations/koa": "^1.1.1",
     "@escape.tech/graphql-armor": "^2.4.0",
     "@graphql-tools/graphql-file-loader": "^8.0.12",
@@ -53,7 +53,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@apollo/client": "^3.11.8",
+    "@apollo/client": "^3.12.11",
     "@faker-js/faker": "^8.4.1",
     "@graphql-codegen/cli": "5.0.4",
     "@graphql-codegen/introspection": "4.0.3",

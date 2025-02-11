@@ -16,7 +16,7 @@
     "dev": "ts-node-dev --inspect=0.0.0.0:9229 --respawn --transpile-only --require ./src/telemetry/index.ts src/index.ts"
   },
   "devDependencies": {
-    "@apollo/client": "^3.11.8",
+    "@apollo/client": "^3.12.11",
     "@graphql-codegen/cli": "5.0.4",
     "@graphql-codegen/introspection": "4.0.3",
     "@graphql-codegen/typescript": "4.1.3",
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@adonisjs/fold": "^8.2.0",
-    "@apollo/server": "^4.11.2",
+    "@apollo/server": "^4.11.3",
     "@as-integrations/koa": "^1.1.1",
     "@escape.tech/graphql-armor": "^2.4.0",
     "@faker-js/faker": "^8.4.1",

@@ -16,7 +16,7 @@
     "@types/uuid": "^9.0.8"
   },
   "dependencies": {
-    "@apollo/client": "^3.11.8",
+    "@apollo/client": "^3.12.11",
     "@interledger/http-signature-utils": "2.0.2",
     "graphql": "^16.8.1",
     "pino": "^8.19.0",
