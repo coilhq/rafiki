@@ -6,3 +6,7 @@ a.default-link {
   color: revert;
   text-decoration: revert;
 }
+
+div.forward {
+  z-index: 1;
+}

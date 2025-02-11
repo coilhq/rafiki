@@ -23,14 +23,14 @@ export const getAssets: QueryResolvers<TenantedApolloContext>['assets'] =
     const assets = await assetService.getPage({
       pagination,
       sortOrder: order,
-      tenantId: ctx.tenant.id
+      tenantId: ctx.isOperator ? undefined : ctx.tenant.id
     })
     const pageInfo = await getPageInfo({
       getPage: (pagination: Pagination, sortOrder?: SortOrder) =>
         assetService.getPage({
           pagination,
           sortOrder,
-          tenantId: ctx.tenant.id
+          tenantId: ctx.isOperator ? undefined : ctx.tenant.id
         }),
       page: assets,
       sortOrder: order
@@ -203,5 +203,6 @@ export const assetToGraphql = (asset: Asset): SchemaAsset => ({
   scale: asset.scale,
   withdrawalThreshold: asset.withdrawalThreshold,
   liquidityThreshold: asset.liquidityThreshold,
-  createdAt: new Date(+asset.createdAt).toISOString()
+  createdAt: new Date(+asset.createdAt).toISOString(),
+  tenantId: asset.tenantId
 })

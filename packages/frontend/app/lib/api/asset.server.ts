@@ -123,6 +123,7 @@ export const listAssets = async (request: Request, args: QueryAssetsArgs) => {
               scale
               withdrawalThreshold
               createdAt
+              tenantId
             }
           }
           pageInfo {
@@ -139,8 +140,12 @@ export const listAssets = async (request: Request, args: QueryAssetsArgs) => {
   return response.data.assets
 }
 
-export const createAsset = async (request: Request, args: CreateAssetInput) => {
-  const apolloClient = await getApolloClient(request)
+export const createAsset = async (
+  request: Request,
+  args: CreateAssetInput,
+  tenantId?: string
+) => {
+  const apolloClient = await getApolloClient(request, tenantId)
   const response = await apolloClient.mutate<
     CreateAssetMutation,
     CreateAssetMutationVariables

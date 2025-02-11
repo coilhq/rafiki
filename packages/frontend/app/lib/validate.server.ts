@@ -104,7 +104,8 @@ export const createAssetSchema = z
       })
       .int()
       .min(0, { message: 'Scale should be from 0 to 255' })
-      .max(255, { message: 'Scale should be from 0 to 255' })
+      .max(255, { message: 'Scale should be from 0 to 255' }),
+    tenantId: z.string().optional()
   })
   .merge(updateAssetSchema)
   .omit({ id: true })
@@ -118,7 +119,8 @@ export const amountSchema = z.coerce
 export const createWalletAddressSchema = z.object({
   name: z.string().min(1),
   publicName: z.string().optional(),
-  asset: z.string().uuid()
+  asset: z.string().uuid(),
+  tenantId: z.string().uuid().optional()
 })
 
 export const updateWalletAddressSchema = z

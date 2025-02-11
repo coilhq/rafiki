@@ -10,6 +10,7 @@ import {
   useNavigation
 } from '@remix-run/react'
 import { PageHeader } from '~/components/PageHeader'
+import type { SelectOption } from '~/components/ui'
 import { Button, ErrorPanel, Input, Select } from '~/components/ui'
 import { loadAssets } from '~/lib/api/asset.server'
 import { createPeer } from '~/lib/api/peer.server'
@@ -19,21 +20,40 @@ import type { ZodFieldErrors } from '~/shared/types'
 import { checkAuthAndRedirect } from '../lib/kratos_checks.server'
 import type { RedirectDialogRef } from '~/components/RedirectDialog'
 import { RedirectDialog } from '~/components/RedirectDialog'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { loadTenants, whoami } from '~/lib/api/tenant.server'
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const cookies = request.headers.get('cookie')
   await checkAuthAndRedirect(request.url, cookies)
 
-  return json({ assets: await loadAssets(request) })
+  const assets = await loadAssets(request)
+  const { isOperator } = await whoami(request)
+  let tenants
+  if (isOperator) {
+    tenants = await loadTenants(request)
+  }
+
+  return json({ assets, tenants })
 }
 
 export default function CreatePeerPage() {
-  const { assets } = useLoaderData<typeof loader>()
+  const { assets, tenants } = useLoaderData<typeof loader>()
   const response = useActionData<typeof action>()
   const { state } = useNavigation()
   const isSubmitting = state === 'submitting'
   const dialogRef = useRef<RedirectDialogRef>(null)
+  const [tenantId, setTenantId] = useState<SelectOption | undefined>()
+
+  const getAssetsOfTenant = (): SelectOption[] => {
+    const assetsOfTenant = assets.filter(
+      (asset) => asset.node.tenantId === tenantId?.value
+    )
+    return assetsOfTenant.map((asset) => ({
+      value: asset.node.id,
+      label: `${asset.node.code} (Scale: ${asset.node.scale})`
+    }))
+  }
 
   useEffect(() => {
     if (assets.length === 0) {
@@ -200,29 +220,77 @@ export default function CreatePeerPage() {
                 </div>
                 <div className='md:col-span-2 bg-white rounded-md shadow-md'>
                   <div className='w-full p-4 space-y-3'>
-                    <Select
-                      options={assets.map((asset) => ({
-                        value: asset.node.id,
-                        label: `${asset.node.code} (Scale: ${asset.node.scale})`
-                      }))}
-                      error={response?.errors.fieldErrors.asset}
-                      name='asset'
-                      placeholder='Select asset...'
-                      label='Asset'
-                      description={
-                        <>
-                          The type of{' '}
-                          <a
-                            className='default-link'
-                            href='https://rafiki.dev/overview/concepts/accounting#assets'
-                          >
-                            asset
-                          </a>{' '}
-                          that is sent to & received from the peer.
-                        </>
-                      }
-                      required
-                    />
+                    {tenants ? (
+                      <Select
+                        options={tenants.map((tenant) => ({
+                          value: tenant.node.id,
+                          label: `${tenant.node.id} ${tenant.node.publicName ? `(${tenant.node.publicName})` : ''}`
+                        }))}
+                        name='tenantId'
+                        placeholder='Select tenant...'
+                        required
+                        onChange={(value) => setTenantId(value)}
+                        description={
+                          <>
+                            The tenant whose{' '}
+                            <a
+                              className='default-link'
+                              href='https://rafiki.dev/overview/concepts/accounting#assets'
+                            >
+                              asset
+                            </a>{' '}
+                            will sent to & received from the peer.
+                          </>
+                        }
+                        bringForward
+                      />
+                    ) : (
+                      <Select
+                        options={assets.map((asset) => ({
+                          value: asset.node.id,
+                          label: `${asset.node.code} (Scale: ${asset.node.scale})`
+                        }))}
+                        error={response?.errors.fieldErrors.asset}
+                        name='asset'
+                        placeholder='Select asset...'
+                        label='Asset'
+                        description={
+                          <>
+                            The type of{' '}
+                            <a
+                              className='default-link'
+                              href='https://rafiki.dev/overview/concepts/accounting#assets'
+                            >
+                              asset
+                            </a>{' '}
+                            that is sent to & received from the peer.
+                          </>
+                        }
+                        required
+                      />
+                    )}
+                    {tenants && tenantId && (
+                      <Select
+                        options={getAssetsOfTenant()}
+                        error={response?.errors.fieldErrors.asset}
+                        name='asset'
+                        placeholder='Select asset...'
+                        label='Asset'
+                        description={
+                          <>
+                            The type of{' '}
+                            <a
+                              className='default-link'
+                              href='https://rafiki.dev/overview/concepts/accounting#assets'
+                            >
+                              asset
+                            </a>{' '}
+                            that is sent to & received from the peer.
+                          </>
+                        }
+                        required
+                      />
+                    )}
                   </div>
                 </div>
               </div>
