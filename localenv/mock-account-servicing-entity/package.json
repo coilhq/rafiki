@@ -15,7 +15,7 @@
     "@remix-run/node": "^2.15.3",
     "@remix-run/react": "^2.15.3",
     "@remix-run/serve": "^2.15.3",
-    "@types/node": "^18.7.12",
+    "@types/node": "^20.17.17",
     "@types/uuid": "^9.0.8",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
@@ -38,6 +38,6 @@
     "tailwindcss": "^3.4.17"
   },
   "engines": {
-    "node": "20"
+    "node": "20.18.3"
   }
 }
