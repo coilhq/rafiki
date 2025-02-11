@@ -1,21 +1,39 @@
 import { json, type ActionFunctionArgs } from '@remix-run/node'
-import { Form, useActionData, useNavigation } from '@remix-run/react'
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigation
+} from '@remix-run/react'
 import { PageHeader } from '~/components'
-import { Button, ErrorPanel, Input } from '~/components/ui'
+import { Button, Dropdown, ErrorPanel, Input } from '~/components/ui'
 import { createAsset } from '~/lib/api/asset.server'
 import { messageStorage, setMessageAndRedirect } from '~/lib/message.server'
 import { createAssetSchema } from '~/lib/validate.server'
 import type { ZodFieldErrors } from '~/shared/types'
 import { checkAuthAndRedirect } from '../lib/kratos_checks.server'
 import { type LoaderFunctionArgs } from '@remix-run/node'
+import { whoami, loadTenants } from '~/lib/api/tenant.server'
+import { getSession } from '~/lib/session.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const cookies = request.headers.get('cookie')
   await checkAuthAndRedirect(request.url, cookies)
-  return null
+
+  const session = await getSession(cookies)
+  const sessionTenantId = session.get('tenantId')
+
+  const { isOperator } = await whoami(request)
+  let tenantIds
+  if (isOperator) {
+    const tenantEdges = await loadTenants(request)
+    tenantIds = tenantEdges.map((edge) => edge.node.id)
+  }
+  return json({ tenantIds, sessionTenantId })
 }
 
 export default function CreateAssetPage() {
+  const { tenantIds, sessionTenantId } = useLoaderData<typeof loader>()
   const response = useActionData<typeof action>()
   const { state } = useNavigation()
   const isSubmitting = state === 'submitting'
@@ -63,6 +81,22 @@ export default function CreateAssetPage() {
                     label='Withdrawal Threshold'
                     error={response?.errors.fieldErrors.withdrawalThreshold}
                   />
+                  {tenantIds && (
+                    <Dropdown
+                      options={tenantIds.map((tenantId) => ({
+                        label: tenantId,
+                        value: tenantId
+                      }))}
+                      name='tenantId'
+                      placeholder='Select tenant...'
+                      label='Tenant Id'
+                      defaultValue={{
+                        label: sessionTenantId,
+                        value: sessionTenantId
+                      }}
+                      required
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -97,6 +131,8 @@ export async function action({ request }: ActionFunctionArgs) {
     return json({ errors }, { status: 400 })
   }
 
+  // Make input fields match GraphQL schema
+  delete result.data.tenantId
   const response = await createAsset(request, {
     ...result.data,
     ...(result.data.withdrawalThreshold

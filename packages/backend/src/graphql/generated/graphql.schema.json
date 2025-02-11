@@ -718,6 +718,18 @@
             "deprecationReason": null
           },
           {
+            "name": "tenantId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "withdrawalThreshold",
             "description": "Minimum amount of liquidity that can be withdrawn from the asset.",
             "args": [],

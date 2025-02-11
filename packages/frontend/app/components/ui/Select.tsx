@@ -21,6 +21,8 @@ type SelectProps = {
   error?: string | string[]
   defaultValue?: SelectOption
   description?: ReactNode
+  onChange?: (value: React.SetStateAction<SelectOption | undefined>) => void
+  bringForward?: boolean
 }
 
 export const Select = ({
@@ -35,7 +37,9 @@ export const Select = ({
     label: '',
     value: ''
   },
-  description
+  description,
+  onChange,
+  bringForward
 }: SelectProps) => {
   const id = useId()
   const [internalValue, setInternalValue] = useState<SelectOption>(defaultValue)
@@ -54,13 +58,18 @@ export const Select = ({
   return (
     <Combobox
       value={internalValue}
-      onChange={setInternalValue}
+      onChange={(value) => {
+        setInternalValue(value)
+        if (onChange) {
+          onChange(value)
+        }
+      }}
       disabled={disabled}
     >
       {name ? (
         <input type='hidden' name={name} value={internalValue.value} />
       ) : null}
-      <div className='relative'>
+      <div className={`relative ${bringForward ? 'forward' : ''}`}>
         {label ? (
           <Combobox.Label as={Label} htmlFor={id} required={required}>
             {label}
