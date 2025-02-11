@@ -15,7 +15,7 @@ overrides:
   vite@>=4.0.0 <=4.5.2: '>=4.5.3'
   undici@>=5.0.0: ^5.28.5
   undici@>=6.0.0: ^6.21.1
-  tar@<6.2.1: '>=6.2.1'
+  tar@<6.2.1: '>=7.4.3'
   braces@<3.0.3: '>=3.0.3'
   '@grpc/grpc-js@>=1.10.0 <1.10.9': '>=1.10.9'
   dset@<3.1.4: '>=3.1.4'
@@ -10131,7 +10131,7 @@ packages:
       minipass-pipeline: 1.2.4
       p-map: 4.0.0
       ssri: 10.0.5
-      tar: 7.2.0
+      tar: 7.4.3
       unique-filename: 3.0.0
     dev: true
 
@@ -18001,7 +18001,7 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
       lru-cache: 10.2.0
-      minipass: 7.0.4
+      minipass: 7.1.2
     dev: true
 
   /path-to-regexp@0.1.12:
@@ -20607,8 +20607,8 @@ packages:
       streamx: 2.20.1
     dev: true
 
-  /tar@7.2.0:
-    resolution: {integrity: sha512-hctwP0Nb4AB60bj8WQgRYaMOuJYRAPMGiQUAotms5igN8ppfQM+IvjQ5HcKu1MaZh2Wy2KWVTe563Yj8dfc14w==}
+  /tar@7.4.3:
+    resolution: {integrity: sha512-5S7Va8hKfV7W5U6g3aYxXmlPoZVAwUMy9AOKyF2fVuZa2UD3qZjg578OrLRt8PcNN1PleVaL/5/yYATNL0ICUw==}
     engines: {node: '>=18'}
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
