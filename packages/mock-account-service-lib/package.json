@@ -20,7 +20,7 @@
     "@interledger/http-signature-utils": "2.0.2",
     "graphql": "^16.8.1",
     "pino": "^8.19.0",
-    "pino-pretty": "^11.0.0",
+    "pino-pretty": "^13.0.0",
     "uuid": "^9.0.1"
   }
 }
