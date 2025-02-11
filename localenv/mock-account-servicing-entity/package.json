@@ -19,7 +19,7 @@
     "@types/uuid": "^9.0.8",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
-    "graphql": "^16.8.1",
+    "graphql": "^16.10.0",
     "json-canonicalize": "^1.0.6",
     "mock-account-service-lib": "workspace:*",
     "react": "^18.2.0",
