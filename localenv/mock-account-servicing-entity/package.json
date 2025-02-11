@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
-    "@headlessui/react": "^1.7.19",
+    "@headlessui/react": "^2.2.0",
     "@interledger/http-signature-utils": "2.0.2",
     "@remix-run/node": "^2.15.3",
     "@remix-run/react": "^2.15.3",
