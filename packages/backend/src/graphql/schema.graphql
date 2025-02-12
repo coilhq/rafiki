@@ -241,6 +241,14 @@ type Mutation {
     input: CreateWalletAddressKeyInput!
   ): CreateWalletAddressKeyMutationResponse
 
+  createTenantSettings(
+    input: CreateTenantSettingsInput!
+  ): CreateTenantSettingsMutationResponse
+
+  deleteTenantSettings(
+    input: DeleteTenantSettingsInput!
+  ): DeleteTenantSettingsMutationResponse
+
   "Revoke a public key associated with a wallet address. Open Payment requests using this key for request signatures will be denied going forward."
   revokeWalletAddressKey(
     input: RevokeWalletAddressKeyInput!
@@ -337,6 +345,11 @@ type Mutation {
 
   "Delete a tenant."
   deleteTenant(id: String!): DeleteTenantMutationResponse!
+
+  "Update tenant setting."
+  updateTenantSetting(
+    input: TenantSettingInput!
+  ): UpdateTenantSettingMutationResponse!
 }
 
 type PageInfo {
@@ -628,6 +641,23 @@ input CreateWalletAddressKeyInput {
   jwk: JwkInput!
   "Unique key to ensure duplicate or retried requests are processed only once. For more information, refer to [idempotency](https://rafiki.dev/apis/graphql/admin-api-overview/#idempotency)."
   idempotencyKey: String
+}
+
+input CreateTenantSettingsInput {
+  "List of a settings for a tenant."
+  settings: [TenantSettingInput!]!
+}
+
+input DeleteTenantSettingsInput {
+  "Key to delete from tenant settings."
+  key: String
+}
+
+input TenantSettingInput {
+  "Key for this setting."
+  key: String!
+  "Value of a setting for this key."
+  value: String!
 }
 
 input RevokeWalletAddressKeyInput {
@@ -1514,6 +1544,11 @@ type CreateWalletAddressKeyMutationResponse {
   walletAddressKey: WalletAddressKey
 }
 
+type CreateTenantSettingsMutationResponse {
+  "New tenant settings."
+  settings: [TenantSetting!]!
+}
+
 type RevokeWalletAddressKeyMutationResponse {
   "The wallet address key that was revoked."
   walletAddressKey: WalletAddressKey
@@ -1551,6 +1586,33 @@ type Tenant implements Model {
   createdAt: String!
   "The date and time that this tenant was deleted."
   deletedAt: String
+  "List of settings for the tenant."
+  settings(
+    "Forward pagination: Cursor (wallet address key ID) to start retrieving settings after this point."
+    after: String
+    "Backward pagination: Cursor (wallet address key ID) to start retrieving keys before this point."
+    before: String
+    "Forward pagination: Limit the result to the first **n** keys after the `after` cursor."
+    first: Int
+    "Backward pagination: Limit the result to the last **n** keys before the `before` cursor."
+    last: Int
+    "Specify the sort order of keys based on their creation data, either ascending or descending."
+    sortOrder: SortOrder
+  ): TenantSettingsConnection
+}
+
+type TenantSettingsConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges representing tenant settings and cursors for pagination."
+  edges: [TenantSettingEdge!]!
+}
+
+type TenantSettingEdge {
+  "A tenant setting node in the list."
+  node: TenantSetting!
+  "A cursor for paginating through the tenants."
+  cursor: String!
 }
 
 type TenantsConnection {
@@ -1565,6 +1627,13 @@ type TenantEdge {
   node: Tenant!
   "A cursor for paginating through the tenants."
   cursor: String!
+}
+
+type TenantSetting {
+  "Key for this setting."
+  key: String!
+  "Value of a setting for this key."
+  value: String!
 }
 
 input CreateTenantInput {
@@ -1599,7 +1668,15 @@ type TenantMutationResponse {
   tenant: Tenant!
 }
 
+type UpdateTenantSettingMutationResponse {
+  setting: TenantSetting!
+}
+
 type DeleteTenantMutationResponse {
+  success: Boolean!
+}
+
+type DeleteTenantSettingsMutationResponse {
   success: Boolean!
 }
 

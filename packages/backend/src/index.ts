@@ -75,6 +75,7 @@ import { createWebhookService } from './webhook/service'
 import { createInMemoryDataStore } from './middleware/cache/data-stores/in-memory'
 import { createTenantService } from './tenants/service'
 import { AuthServiceClient } from './auth-service-client/client'
+import { createTenantSettingService } from './tenants/settings/service'
 
 BigInt.prototype.toJSON = function () {
   return this.toString()
@@ -234,8 +235,17 @@ export function initIocContainer(
       logger: await deps.use('logger'),
       knex: await deps.use('knex'),
       tenantCache: await deps.use('tenantCache'),
-      authServiceClient: deps.use('authServiceClient')
+      authServiceClient: deps.use('authServiceClient'),
+      tenantSettingService: await deps.use('tenantSettingService')
     })
+  })
+
+  container.singleton('tenantSettingService', async (deps) => {
+    const [logger, knex] = await Promise.all([
+      deps.use('logger'),
+      deps.use('knex')
+    ])
+    return createTenantSettingService({ logger, knex })
   })
 
   container.singleton('ratesService', async (deps) => {

@@ -1,0 +1,43 @@
+meta {
+  name: Get Tenants
+  type: graphql
+  seq: 57
+}
+
+post {
+  url: {{RafikiGraphqlHost}}/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation UpdateTenant($input: UpdateTenantInput!) {
+    updateTenant(input:$input) {
+      tenant {
+        id
+        email
+        apiSecret
+        idpConsentUrl
+        idpSecret
+      }
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "input": {
+      "id": "{{tenantId}}",
+      "email": "updated@example.com",
+      "apiSecret": "updated-test-secret",
+      "idpConsentUrl": "https://example.com/consent-updated",
+      "idpSecret": "updated-test-idp-secret"
+    }
+  }
+}
+
+script:pre-request {
+  const scripts = require('./scripts');
+  
+  scripts.addApiSignatureHeader();
+}

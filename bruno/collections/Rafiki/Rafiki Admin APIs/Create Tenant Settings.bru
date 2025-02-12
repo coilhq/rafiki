@@ -1,0 +1,44 @@
+meta {
+  name: Create Tenant Settings
+  type: graphql
+  seq: 58
+}
+
+post {
+  url: {{RafikiGraphqlHost}}/graphql
+  body: graphql
+  auth: none
+}
+
+headers {
+  tenant-id: 438fa74a-fa7d-4317-9ced-dde32ece1787
+}
+
+body:graphql {
+  mutation CreateTenantSettings($input: [CreateTenantSettingsInput!]!) {
+    createTenantSettings(input:$input) {
+      settings {
+        key
+        value
+      }
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "input": [
+      {
+        "key": "MY_KEY",
+        "value": "MY_VALUE"
+      }
+    ]
+  }
+  
+}
+
+script:pre-request {
+  const scripts = require('./scripts');
+  
+  scripts.addApiSignatureHeader();
+}

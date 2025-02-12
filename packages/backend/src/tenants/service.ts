@@ -4,6 +4,8 @@ import { TransactionOrKnex } from 'objection'
 import { Pagination, SortOrder } from '../shared/baseModel'
 import { CacheDataStore } from '../middleware/cache/data-stores'
 import type { AuthServiceClient } from '../auth-service-client/client'
+import { TenantSettingService } from './settings/service'
+import { TenantSetting } from './settings/model'
 
 export interface TenantService {
   get: (id: string) => Promise<Tenant | undefined>
@@ -17,6 +19,7 @@ export interface ServiceDependencies extends BaseService {
   knex: TransactionOrKnex
   tenantCache: CacheDataStore<Tenant>
   authServiceClient: AuthServiceClient
+  tenantSettingService: TenantSettingService
 }
 
 export async function createTenantService(
@@ -88,8 +91,17 @@ async function createTenant(
       idpConsentUrl
     })
 
+    const settings = await deps.tenantSettingService.create(
+      {
+        tenantId: tenant.id,
+        setting: TenantSetting.default()
+      },
+      { trx }
+    )
+
     await trx.commit()
 
+    tenant.settings = settings
     await deps.tenantCache.set(tenant.id, tenant)
     return tenant
   } catch (err) {
@@ -152,6 +164,13 @@ async function deleteTenant(
   await deps.tenantCache.delete(id)
   try {
     const deletedAt = new Date()
+
+    await deps.tenantSettingService.delete(
+      {
+        tenantId: id
+      },
+      { trx }
+    )
     await Tenant.query(trx).patchAndFetchById(id, {
       deletedAt
     })

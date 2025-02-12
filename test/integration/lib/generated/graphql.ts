@@ -377,6 +377,17 @@ export type CreateTenantInput = {
   publicName?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type CreateTenantSettingsInput = {
+  /** List of a settings for a tenant. */
+  settings: Array<TenantSettingInput>;
+};
+
+export type CreateTenantSettingsMutationResponse = {
+  __typename?: 'CreateTenantSettingsMutationResponse';
+  /** New tenant settings. */
+  settings: Array<TenantSetting>;
+};
+
 export type CreateWalletAddressInput = {
   /** Additional properties associated with the wallet address. */
   additionalProperties?: InputMaybe<Array<AdditionalPropertyInput>>;
@@ -457,6 +468,16 @@ export type DeletePeerMutationResponse = {
 
 export type DeleteTenantMutationResponse = {
   __typename?: 'DeleteTenantMutationResponse';
+  success: Scalars['Boolean']['output'];
+};
+
+export type DeleteTenantSettingsInput = {
+  /** Key to delete from tenant settings. */
+  key?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DeleteTenantSettingsMutationResponse = {
+  __typename?: 'DeleteTenantSettingsMutationResponse';
   success: Scalars['Boolean']['output'];
 };
 
@@ -743,6 +764,7 @@ export type Mutation = {
   createReceiver: CreateReceiverResponse;
   /** As an operator, create a tenant. */
   createTenant: TenantMutationResponse;
+  createTenantSettings?: Maybe<CreateTenantSettingsMutationResponse>;
   /** Create a new wallet address. */
   createWalletAddress: CreateWalletAddressMutationResponse;
   /** Add a public key to a wallet address that is used to verify Open Payments requests. */
@@ -755,6 +777,7 @@ export type Mutation = {
   deletePeer: DeletePeerMutationResponse;
   /** Delete a tenant. */
   deleteTenant: DeleteTenantMutationResponse;
+  deleteTenantSettings?: Maybe<DeleteTenantSettingsMutationResponse>;
   /** Deposit asset liquidity. */
   depositAssetLiquidity?: Maybe<LiquidityMutationResponse>;
   /**
@@ -782,6 +805,8 @@ export type Mutation = {
   updatePeer: UpdatePeerMutationResponse;
   /** Update a tenant. */
   updateTenant: TenantMutationResponse;
+  /** Update tenant setting. */
+  updateTenantSetting: UpdateTenantSettingMutationResponse;
   /** Update an existing wallet address. */
   updateWalletAddress: UpdateWalletAddressMutationResponse;
   /** Void liquidity withdrawal. Withdrawals are two-phase commits and are rolled back via this mutation. */
@@ -874,6 +899,11 @@ export type MutationCreateTenantArgs = {
 };
 
 
+export type MutationCreateTenantSettingsArgs = {
+  input: CreateTenantSettingsInput;
+};
+
+
 export type MutationCreateWalletAddressArgs = {
   input: CreateWalletAddressInput;
 };
@@ -901,6 +931,11 @@ export type MutationDeletePeerArgs = {
 
 export type MutationDeleteTenantArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteTenantSettingsArgs = {
+  input: DeleteTenantSettingsInput;
 };
 
 
@@ -961,6 +996,11 @@ export type MutationUpdatePeerArgs = {
 
 export type MutationUpdateTenantArgs = {
   input: UpdateTenantInput;
+};
+
+
+export type MutationUpdateTenantSettingArgs = {
+  input: TenantSettingInput;
 };
 
 
@@ -1456,6 +1496,17 @@ export type Tenant = Model & {
   idpSecret?: Maybe<Scalars['String']['output']>;
   /** Public name for the tenant. */
   publicName?: Maybe<Scalars['String']['output']>;
+  /** List of settings for the tenant. */
+  settings?: Maybe<TenantSettingsConnection>;
+};
+
+
+export type TenantSettingsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  sortOrder?: InputMaybe<SortOrder>;
 };
 
 export type TenantEdge = {
@@ -1469,6 +1520,37 @@ export type TenantEdge = {
 export type TenantMutationResponse = {
   __typename?: 'TenantMutationResponse';
   tenant: Tenant;
+};
+
+export type TenantSetting = {
+  __typename?: 'TenantSetting';
+  /** Key for this setting. */
+  key: Scalars['String']['output'];
+  /** Value of a setting for this key. */
+  value: Scalars['String']['output'];
+};
+
+export type TenantSettingEdge = {
+  __typename?: 'TenantSettingEdge';
+  /** A cursor for paginating through the tenants. */
+  cursor: Scalars['String']['output'];
+  /** A tenant setting node in the list. */
+  node: TenantSetting;
+};
+
+export type TenantSettingInput = {
+  /** Key for this setting. */
+  key: Scalars['String']['input'];
+  /** Value of a setting for this key. */
+  value: Scalars['String']['input'];
+};
+
+export type TenantSettingsConnection = {
+  __typename?: 'TenantSettingsConnection';
+  /** A list of edges representing tenant settings and cursors for pagination. */
+  edges: Array<TenantSettingEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
 };
 
 export type TenantsConnection = {
@@ -1564,6 +1646,11 @@ export type UpdateTenantInput = {
   idpSecret?: InputMaybe<Scalars['String']['input']>;
   /** Public name for the tenant. */
   publicName?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateTenantSettingMutationResponse = {
+  __typename?: 'UpdateTenantSettingMutationResponse';
+  setting: TenantSetting;
 };
 
 export type UpdateWalletAddressInput = {
@@ -1883,6 +1970,8 @@ export type ResolversTypes = {
   CreateReceiverInput: ResolverTypeWrapper<Partial<CreateReceiverInput>>;
   CreateReceiverResponse: ResolverTypeWrapper<Partial<CreateReceiverResponse>>;
   CreateTenantInput: ResolverTypeWrapper<Partial<CreateTenantInput>>;
+  CreateTenantSettingsInput: ResolverTypeWrapper<Partial<CreateTenantSettingsInput>>;
+  CreateTenantSettingsMutationResponse: ResolverTypeWrapper<Partial<CreateTenantSettingsMutationResponse>>;
   CreateWalletAddressInput: ResolverTypeWrapper<Partial<CreateWalletAddressInput>>;
   CreateWalletAddressKeyInput: ResolverTypeWrapper<Partial<CreateWalletAddressKeyInput>>;
   CreateWalletAddressKeyMutationResponse: ResolverTypeWrapper<Partial<CreateWalletAddressKeyMutationResponse>>;
@@ -1894,6 +1983,8 @@ export type ResolversTypes = {
   DeletePeerInput: ResolverTypeWrapper<Partial<DeletePeerInput>>;
   DeletePeerMutationResponse: ResolverTypeWrapper<Partial<DeletePeerMutationResponse>>;
   DeleteTenantMutationResponse: ResolverTypeWrapper<Partial<DeleteTenantMutationResponse>>;
+  DeleteTenantSettingsInput: ResolverTypeWrapper<Partial<DeleteTenantSettingsInput>>;
+  DeleteTenantSettingsMutationResponse: ResolverTypeWrapper<Partial<DeleteTenantSettingsMutationResponse>>;
   DepositAssetLiquidityInput: ResolverTypeWrapper<Partial<DepositAssetLiquidityInput>>;
   DepositEventLiquidityInput: ResolverTypeWrapper<Partial<DepositEventLiquidityInput>>;
   DepositOutgoingPaymentLiquidityInput: ResolverTypeWrapper<Partial<DepositOutgoingPaymentLiquidityInput>>;
@@ -1956,6 +2047,10 @@ export type ResolversTypes = {
   Tenant: ResolverTypeWrapper<Partial<Tenant>>;
   TenantEdge: ResolverTypeWrapper<Partial<TenantEdge>>;
   TenantMutationResponse: ResolverTypeWrapper<Partial<TenantMutationResponse>>;
+  TenantSetting: ResolverTypeWrapper<Partial<TenantSetting>>;
+  TenantSettingEdge: ResolverTypeWrapper<Partial<TenantSettingEdge>>;
+  TenantSettingInput: ResolverTypeWrapper<Partial<TenantSettingInput>>;
+  TenantSettingsConnection: ResolverTypeWrapper<Partial<TenantSettingsConnection>>;
   TenantsConnection: ResolverTypeWrapper<Partial<TenantsConnection>>;
   TransferState: ResolverTypeWrapper<Partial<TransferState>>;
   TransferType: ResolverTypeWrapper<Partial<TransferType>>;
@@ -1968,6 +2063,7 @@ export type ResolversTypes = {
   UpdatePeerInput: ResolverTypeWrapper<Partial<UpdatePeerInput>>;
   UpdatePeerMutationResponse: ResolverTypeWrapper<Partial<UpdatePeerMutationResponse>>;
   UpdateTenantInput: ResolverTypeWrapper<Partial<UpdateTenantInput>>;
+  UpdateTenantSettingMutationResponse: ResolverTypeWrapper<Partial<UpdateTenantSettingMutationResponse>>;
   UpdateWalletAddressInput: ResolverTypeWrapper<Partial<UpdateWalletAddressInput>>;
   UpdateWalletAddressMutationResponse: ResolverTypeWrapper<Partial<UpdateWalletAddressMutationResponse>>;
   VoidLiquidityWithdrawalInput: ResolverTypeWrapper<Partial<VoidLiquidityWithdrawalInput>>;
@@ -2023,6 +2119,8 @@ export type ResolversParentTypes = {
   CreateReceiverInput: Partial<CreateReceiverInput>;
   CreateReceiverResponse: Partial<CreateReceiverResponse>;
   CreateTenantInput: Partial<CreateTenantInput>;
+  CreateTenantSettingsInput: Partial<CreateTenantSettingsInput>;
+  CreateTenantSettingsMutationResponse: Partial<CreateTenantSettingsMutationResponse>;
   CreateWalletAddressInput: Partial<CreateWalletAddressInput>;
   CreateWalletAddressKeyInput: Partial<CreateWalletAddressKeyInput>;
   CreateWalletAddressKeyMutationResponse: Partial<CreateWalletAddressKeyMutationResponse>;
@@ -2033,6 +2131,8 @@ export type ResolversParentTypes = {
   DeletePeerInput: Partial<DeletePeerInput>;
   DeletePeerMutationResponse: Partial<DeletePeerMutationResponse>;
   DeleteTenantMutationResponse: Partial<DeleteTenantMutationResponse>;
+  DeleteTenantSettingsInput: Partial<DeleteTenantSettingsInput>;
+  DeleteTenantSettingsMutationResponse: Partial<DeleteTenantSettingsMutationResponse>;
   DepositAssetLiquidityInput: Partial<DepositAssetLiquidityInput>;
   DepositEventLiquidityInput: Partial<DepositEventLiquidityInput>;
   DepositOutgoingPaymentLiquidityInput: Partial<DepositOutgoingPaymentLiquidityInput>;
@@ -2088,6 +2188,10 @@ export type ResolversParentTypes = {
   Tenant: Partial<Tenant>;
   TenantEdge: Partial<TenantEdge>;
   TenantMutationResponse: Partial<TenantMutationResponse>;
+  TenantSetting: Partial<TenantSetting>;
+  TenantSettingEdge: Partial<TenantSettingEdge>;
+  TenantSettingInput: Partial<TenantSettingInput>;
+  TenantSettingsConnection: Partial<TenantSettingsConnection>;
   TenantsConnection: Partial<TenantsConnection>;
   TriggerWalletAddressEventsInput: Partial<TriggerWalletAddressEventsInput>;
   TriggerWalletAddressEventsMutationResponse: Partial<TriggerWalletAddressEventsMutationResponse>;
@@ -2098,6 +2202,7 @@ export type ResolversParentTypes = {
   UpdatePeerInput: Partial<UpdatePeerInput>;
   UpdatePeerMutationResponse: Partial<UpdatePeerMutationResponse>;
   UpdateTenantInput: Partial<UpdateTenantInput>;
+  UpdateTenantSettingMutationResponse: Partial<UpdateTenantSettingMutationResponse>;
   UpdateWalletAddressInput: Partial<UpdateWalletAddressInput>;
   UpdateWalletAddressMutationResponse: Partial<UpdateWalletAddressMutationResponse>;
   VoidLiquidityWithdrawalInput: Partial<VoidLiquidityWithdrawalInput>;
@@ -2215,6 +2320,11 @@ export type CreateReceiverResponseResolvers<ContextType = any, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CreateTenantSettingsMutationResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateTenantSettingsMutationResponse'] = ResolversParentTypes['CreateTenantSettingsMutationResponse']> = {
+  settings?: Resolver<Array<ResolversTypes['TenantSetting']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type CreateWalletAddressKeyMutationResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateWalletAddressKeyMutationResponse'] = ResolversParentTypes['CreateWalletAddressKeyMutationResponse']> = {
   walletAddressKey?: Resolver<Maybe<ResolversTypes['WalletAddressKey']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -2236,6 +2346,11 @@ export type DeletePeerMutationResponseResolvers<ContextType = any, ParentType ex
 };
 
 export type DeleteTenantMutationResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteTenantMutationResponse'] = ResolversParentTypes['DeleteTenantMutationResponse']> = {
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DeleteTenantSettingsMutationResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteTenantSettingsMutationResponse'] = ResolversParentTypes['DeleteTenantSettingsMutationResponse']> = {
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -2345,12 +2460,14 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createQuote?: Resolver<ResolversTypes['QuoteResponse'], ParentType, ContextType, RequireFields<MutationCreateQuoteArgs, 'input'>>;
   createReceiver?: Resolver<ResolversTypes['CreateReceiverResponse'], ParentType, ContextType, RequireFields<MutationCreateReceiverArgs, 'input'>>;
   createTenant?: Resolver<ResolversTypes['TenantMutationResponse'], ParentType, ContextType, RequireFields<MutationCreateTenantArgs, 'input'>>;
+  createTenantSettings?: Resolver<Maybe<ResolversTypes['CreateTenantSettingsMutationResponse']>, ParentType, ContextType, RequireFields<MutationCreateTenantSettingsArgs, 'input'>>;
   createWalletAddress?: Resolver<ResolversTypes['CreateWalletAddressMutationResponse'], ParentType, ContextType, RequireFields<MutationCreateWalletAddressArgs, 'input'>>;
   createWalletAddressKey?: Resolver<Maybe<ResolversTypes['CreateWalletAddressKeyMutationResponse']>, ParentType, ContextType, RequireFields<MutationCreateWalletAddressKeyArgs, 'input'>>;
   createWalletAddressWithdrawal?: Resolver<Maybe<ResolversTypes['WalletAddressWithdrawalMutationResponse']>, ParentType, ContextType, RequireFields<MutationCreateWalletAddressWithdrawalArgs, 'input'>>;
   deleteAsset?: Resolver<ResolversTypes['DeleteAssetMutationResponse'], ParentType, ContextType, RequireFields<MutationDeleteAssetArgs, 'input'>>;
   deletePeer?: Resolver<ResolversTypes['DeletePeerMutationResponse'], ParentType, ContextType, RequireFields<MutationDeletePeerArgs, 'input'>>;
   deleteTenant?: Resolver<ResolversTypes['DeleteTenantMutationResponse'], ParentType, ContextType, RequireFields<MutationDeleteTenantArgs, 'id'>>;
+  deleteTenantSettings?: Resolver<Maybe<ResolversTypes['DeleteTenantSettingsMutationResponse']>, ParentType, ContextType, RequireFields<MutationDeleteTenantSettingsArgs, 'input'>>;
   depositAssetLiquidity?: Resolver<Maybe<ResolversTypes['LiquidityMutationResponse']>, ParentType, ContextType, RequireFields<MutationDepositAssetLiquidityArgs, 'input'>>;
   depositEventLiquidity?: Resolver<Maybe<ResolversTypes['LiquidityMutationResponse']>, ParentType, ContextType, RequireFields<MutationDepositEventLiquidityArgs, 'input'>>;
   depositOutgoingPaymentLiquidity?: Resolver<Maybe<ResolversTypes['LiquidityMutationResponse']>, ParentType, ContextType, RequireFields<MutationDepositOutgoingPaymentLiquidityArgs, 'input'>>;
@@ -2363,6 +2480,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateIncomingPayment?: Resolver<ResolversTypes['IncomingPaymentResponse'], ParentType, ContextType, RequireFields<MutationUpdateIncomingPaymentArgs, 'input'>>;
   updatePeer?: Resolver<ResolversTypes['UpdatePeerMutationResponse'], ParentType, ContextType, RequireFields<MutationUpdatePeerArgs, 'input'>>;
   updateTenant?: Resolver<ResolversTypes['TenantMutationResponse'], ParentType, ContextType, RequireFields<MutationUpdateTenantArgs, 'input'>>;
+  updateTenantSetting?: Resolver<ResolversTypes['UpdateTenantSettingMutationResponse'], ParentType, ContextType, RequireFields<MutationUpdateTenantSettingArgs, 'input'>>;
   updateWalletAddress?: Resolver<ResolversTypes['UpdateWalletAddressMutationResponse'], ParentType, ContextType, RequireFields<MutationUpdateWalletAddressArgs, 'input'>>;
   voidLiquidityWithdrawal?: Resolver<Maybe<ResolversTypes['LiquidityMutationResponse']>, ParentType, ContextType, RequireFields<MutationVoidLiquidityWithdrawalArgs, 'input'>>;
   withdrawEventLiquidity?: Resolver<Maybe<ResolversTypes['LiquidityMutationResponse']>, ParentType, ContextType, RequireFields<MutationWithdrawEventLiquidityArgs, 'input'>>;
@@ -2545,6 +2663,7 @@ export type TenantResolvers<ContextType = any, ParentType extends ResolversParen
   idpConsentUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   idpSecret?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   publicName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  settings?: Resolver<Maybe<ResolversTypes['TenantSettingsConnection']>, ParentType, ContextType, Partial<TenantSettingsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2556,6 +2675,24 @@ export type TenantEdgeResolvers<ContextType = any, ParentType extends ResolversP
 
 export type TenantMutationResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['TenantMutationResponse'] = ResolversParentTypes['TenantMutationResponse']> = {
   tenant?: Resolver<ResolversTypes['Tenant'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TenantSettingResolvers<ContextType = any, ParentType extends ResolversParentTypes['TenantSetting'] = ResolversParentTypes['TenantSetting']> = {
+  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TenantSettingEdgeResolvers<ContextType = any, ParentType extends ResolversParentTypes['TenantSettingEdge'] = ResolversParentTypes['TenantSettingEdge']> = {
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['TenantSetting'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TenantSettingsConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['TenantSettingsConnection'] = ResolversParentTypes['TenantSettingsConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['TenantSettingEdge']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2580,6 +2717,11 @@ export interface UInt64ScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 
 export type UpdatePeerMutationResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdatePeerMutationResponse'] = ResolversParentTypes['UpdatePeerMutationResponse']> = {
   peer?: Resolver<Maybe<ResolversTypes['Peer']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UpdateTenantSettingMutationResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateTenantSettingMutationResponse'] = ResolversParentTypes['UpdateTenantSettingMutationResponse']> = {
+  setting?: Resolver<ResolversTypes['TenantSetting'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2691,11 +2833,13 @@ export type Resolvers<ContextType = any> = {
   CreateOrUpdatePeerByUrlMutationResponse?: CreateOrUpdatePeerByUrlMutationResponseResolvers<ContextType>;
   CreatePeerMutationResponse?: CreatePeerMutationResponseResolvers<ContextType>;
   CreateReceiverResponse?: CreateReceiverResponseResolvers<ContextType>;
+  CreateTenantSettingsMutationResponse?: CreateTenantSettingsMutationResponseResolvers<ContextType>;
   CreateWalletAddressKeyMutationResponse?: CreateWalletAddressKeyMutationResponseResolvers<ContextType>;
   CreateWalletAddressMutationResponse?: CreateWalletAddressMutationResponseResolvers<ContextType>;
   DeleteAssetMutationResponse?: DeleteAssetMutationResponseResolvers<ContextType>;
   DeletePeerMutationResponse?: DeletePeerMutationResponseResolvers<ContextType>;
   DeleteTenantMutationResponse?: DeleteTenantMutationResponseResolvers<ContextType>;
+  DeleteTenantSettingsMutationResponse?: DeleteTenantSettingsMutationResponseResolvers<ContextType>;
   Fee?: FeeResolvers<ContextType>;
   FeeEdge?: FeeEdgeResolvers<ContextType>;
   FeesConnection?: FeesConnectionResolvers<ContextType>;
@@ -2732,11 +2876,15 @@ export type Resolvers<ContextType = any> = {
   Tenant?: TenantResolvers<ContextType>;
   TenantEdge?: TenantEdgeResolvers<ContextType>;
   TenantMutationResponse?: TenantMutationResponseResolvers<ContextType>;
+  TenantSetting?: TenantSettingResolvers<ContextType>;
+  TenantSettingEdge?: TenantSettingEdgeResolvers<ContextType>;
+  TenantSettingsConnection?: TenantSettingsConnectionResolvers<ContextType>;
   TenantsConnection?: TenantsConnectionResolvers<ContextType>;
   TriggerWalletAddressEventsMutationResponse?: TriggerWalletAddressEventsMutationResponseResolvers<ContextType>;
   UInt8?: GraphQLScalarType;
   UInt64?: GraphQLScalarType;
   UpdatePeerMutationResponse?: UpdatePeerMutationResponseResolvers<ContextType>;
+  UpdateTenantSettingMutationResponse?: UpdateTenantSettingMutationResponseResolvers<ContextType>;
   UpdateWalletAddressMutationResponse?: UpdateWalletAddressMutationResponseResolvers<ContextType>;
   WalletAddress?: WalletAddressResolvers<ContextType>;
   WalletAddressEdge?: WalletAddressEdgeResolvers<ContextType>;

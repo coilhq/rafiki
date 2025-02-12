@@ -108,6 +108,7 @@ import {
 } from './shared/utils'
 import { TenantService } from './tenants/service'
 import { AuthServiceClient } from './auth-service-client/client'
+import { TenantSettingService } from './tenants/settings/service'
 
 export interface AppContextData {
   logger: Logger
@@ -275,6 +276,7 @@ export interface AppServices {
   localPaymentService: Promise<LocalPaymentService>
   tenantService: Promise<TenantService>
   authServiceClient: AuthServiceClient
+  tenantSettingService: Promise<TenantSettingService>
 }
 
 export type AppContainer = IocContract<AppServices>

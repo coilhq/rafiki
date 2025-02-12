@@ -85,6 +85,11 @@ import {
   getTenant,
   getTenants
 } from './tenant'
+import {
+  createTenantSettings,
+  deleteTenantSettings,
+  getTenantSettings
+} from './tenant_settings'
 
 export const resolvers: Resolvers = {
   UInt8: GraphQLUInt8,
@@ -128,6 +133,9 @@ export const resolvers: Resolvers = {
     quotes: getWalletAddressQuotes,
     walletAddressKeys: getWalletAddressKeys,
     additionalProperties: getWalletAddressAdditionalProperties
+  },
+  Tenant: {
+    settings: getTenantSettings
   },
   IncomingPayment: {
     liquidity: getIncomingPaymentLiquidity
@@ -175,6 +183,8 @@ export const resolvers: Resolvers = {
     updateIncomingPayment,
     createTenant,
     updateTenant,
-    deleteTenant
+    deleteTenant,
+    createTenantSettings,
+    deleteTenantSettings
   }
 }
