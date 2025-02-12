@@ -1,24 +1,37 @@
 FROM node:20-alpine3.20
 
+RUN adduser -D rafiki
 WORKDIR /home/rafiki
 
-RUN corepack enable
+# Install Corepack and pnpm as the Rafiki user
+USER rafiki
+RUN mkdir -p /home/rafiki/.local/bin
+ENV PATH="/home/rafiki/.local/bin:$PATH"
+RUN corepack enable --install-directory ~/.local/bin
 RUN corepack prepare pnpm@8.7.4 --activate
 
 COPY pnpm-lock.yaml package.json pnpm-workspace.yaml .npmrc tsconfig.json tsconfig.build.json ./
 
+# Fetch the pnpm dependencies, but use a local cache.
+USER rafiki
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm fetch \
     | grep -v "cross-device link not permitted\|Falling back to copying packages from store"
 
+# Copy the source code and chown the relevant folders back to the Rafiki user
+USER root
 COPY . ./
+RUN chown -v -R rafiki:rafiki /home/rafiki/localenv
+RUN chown -v -R rafiki:rafiki /home/rafiki/packages
+RUN chown -v -R rafiki:rafiki /home/rafiki/test
 
+# As the Rafiki user, install the rest of the dependencies and build the source code
+USER rafiki
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install \
     --recursive \
     --offline \
     --frozen-lockfile
-
 RUN pnpm --filter auth build:deps
 
 CMD pnpm --filter auth dev

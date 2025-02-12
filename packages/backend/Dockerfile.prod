@@ -45,6 +45,8 @@ RUN pnpm --filter backend build
 
 FROM node:20-alpine3.20 AS runner
 
+# Since this is from a fresh image, we need to first create the Rafiki user
+RUN adduser -D rafiki
 WORKDIR /home/rafiki
 
 COPY --from=prod-deps /home/rafiki/node_modules ./node_modules
@@ -59,4 +61,11 @@ COPY --from=builder /home/rafiki/packages/backend/dist ./packages/backend/dist
 COPY --from=builder /home/rafiki/packages/token-introspection/dist ./packages/token-introspection/dist
 COPY --from=builder /home/rafiki/packages/backend/knexfile.js ./packages/backend/knexfile.js
 
+USER root
+
+# For additional paranoia, we make it so that the Rafiki user has no write access to the packages
+RUN chown -R :rafiki /home/rafiki/packages
+RUN chmod -R 750 /home/rafiki/packages
+
+USER rafiki
 CMD ["node", "-r", "/home/rafiki/packages/backend/dist/telemetry/index.js", "/home/rafiki/packages/backend/dist/index.js"]

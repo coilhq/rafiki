@@ -45,6 +45,8 @@ RUN pnpm --filter auth build
 
 FROM node:20-alpine3.20 AS runner
 
+RUN adduser -D rafiki
+
 WORKDIR /home/rafiki
 
 COPY --from=prod-deps /home/rafiki/node_modules ./node_modules
@@ -58,4 +60,11 @@ COPY --from=builder /home/rafiki/packages/auth/migrations/ ./packages/auth/migra
 COPY --from=builder /home/rafiki/packages/auth/dist ./packages/auth/dist
 COPY --from=builder /home/rafiki/packages/token-introspection/dist ./packages/token-introspection/dist
 
+USER root
+
+# For additional paranoia, we make it so that the Rafiki user has no write access to the packages
+RUN chown -R :rafiki /home/rafiki/packages
+RUN chmod -R 750 /home/rafiki/packages
+
+USER rafiki
 CMD ["node", "/home/rafiki/packages/auth/dist/index.js"]

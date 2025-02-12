@@ -1,16 +1,24 @@
 FROM node:20-alpine3.20 AS base
 
+RUN adduser -D rafiki
 WORKDIR /home/rafiki
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-
-RUN corepack enable
+# Install Corepack and pnpm as the Rafiki user
+USER rafiki
+RUN mkdir -p /home/rafiki/.local/bin
+ENV PATH="/home/rafiki/.local/bin:$PATH"
+RUN corepack enable --install-directory ~/.local/bin
 RUN corepack prepare pnpm@8.7.4 --activate
 
 COPY pnpm-lock.yaml package.json pnpm-workspace.yaml .npmrc tsconfig.json tsconfig.build.json ./
 COPY packages/frontend ./packages/frontend
 
+# Chown the copied packages folder back to the Rafiki user
+USER root
+RUN chown -v -R rafiki:rafiki /home/rafiki/packages
+
+# Fetch the pnpm dependencies, but use a local cache.
+USER rafiki
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm fetch \
     | grep -v "cross-device link not permitted\|Falling back to copying packages from store"
