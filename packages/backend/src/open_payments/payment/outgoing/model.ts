@@ -15,6 +15,7 @@ import {
   OutgoingPayment as OpenPaymentsOutgoingPayment,
   OutgoingPaymentWithSpentAmounts
 } from '@interledger/open-payments'
+import { Tenant } from '../../../tenants/model'
 
 export class OutgoingPaymentGrant extends DbErrors(Model) {
   public static get modelPaths(): string[] {
@@ -108,7 +109,7 @@ export class OutgoingPayment
 
   public getUrl(walletAddress: WalletAddress): string {
     const url = new URL(walletAddress.url)
-    return `${url.origin}${OutgoingPayment.urlPath}/${this.id}`
+    return `${url.origin}/${this.tenantId}${OutgoingPayment.urlPath}/${this.id}`
   }
 
   public get asset(): Asset {
@@ -125,6 +126,8 @@ export class OutgoingPayment
   // Outgoing peer
   public peerId?: string
 
+  public tenantId!: string
+
   static get relationMappings() {
     return {
       ...super.relationMappings,
@@ -134,6 +137,14 @@ export class OutgoingPayment
         join: {
           from: 'outgoingPayments.id',
           to: 'quotes.id'
+        }
+      },
+      tenant: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Tenant,
+        join: {
+          from: 'outgoingPayments.tenantId',
+          to: 'tenants.id'
         }
       }
     }

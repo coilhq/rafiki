@@ -71,6 +71,7 @@ async function getQuote(
 }
 
 interface QuoteOptionsBase {
+  tenantId: string
   walletAddressId: string
   receiver: string
   method: 'ilp'
@@ -104,7 +105,8 @@ async function createQuote(
     return QuoteError.InvalidAmount
   }
   const walletAddress = await deps.walletAddressService.get(
-    options.walletAddressId
+    options.walletAddressId,
+    options.tenantId
   )
   if (!walletAddress) {
     stopTimer()
@@ -189,6 +191,7 @@ async function createQuote(
       const createdQuote = await Quote.query(trx)
         .insertAndFetch({
           id: quoteId,
+          tenantId: options.tenantId,
           walletAddressId: options.walletAddressId,
           assetId: walletAddress.assetId,
           receiver: options.receiver,
@@ -447,6 +450,11 @@ async function getWalletAddressPage(
   options: ListOptions
 ): Promise<Quote[]> {
   const quotes = await Quote.query(deps.knex)
+    .modify((query) => {
+      if (options.tenantId) {
+        query.where({ tenantId: options.tenantId })
+      }
+    })
     .list(options)
     .withGraphFetched('fee')
   for (const quote of quotes) {
@@ -454,7 +462,8 @@ async function getWalletAddressPage(
     if (asset) quote.asset = asset
 
     quote.walletAddress = await deps.walletAddressService.get(
-      quote.walletAddressId
+      quote.walletAddressId,
+      quote.tenantId
     )
   }
   return quotes

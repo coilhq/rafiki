@@ -27,6 +27,7 @@ describe('Combined Payment Service', (): void => {
   let appContainer: TestContainer
   let knex: Knex
   let combinedPaymentService: CombinedPaymentService
+  let tenantId: string
   let sendAsset: Asset
   let sendWalletAddressId: string
   let receiveAsset: Asset
@@ -37,6 +38,7 @@ describe('Combined Payment Service', (): void => {
     appContainer = await createTestApp(deps)
     knex = appContainer.knex
     combinedPaymentService = await deps.use('combinedPaymentService')
+    tenantId = Config.operatorTenantId
   })
 
   beforeEach(async (): Promise<void> => {
@@ -69,6 +71,7 @@ describe('Combined Payment Service', (): void => {
     const receiverUrl = incomingPayment.getUrl(receiveWalletAddress)
 
     const outgoingPayment = await createOutgoingPayment(deps, {
+      tenantId,
       walletAddressId: sendWalletAddressId,
       method: 'ilp',
       receiver: receiverUrl,

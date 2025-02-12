@@ -38,7 +38,8 @@ async function getQuote(
 ): Promise<void> {
   const quote = await deps.quoteService.get({
     id: ctx.params.id,
-    client: ctx.accessAction === AccessAction.Read ? ctx.client : undefined
+    client: ctx.accessAction === AccessAction.Read ? ctx.client : undefined,
+    tenantId: ctx.params.tenantId
   })
 
   if (!quote) {
@@ -73,7 +74,9 @@ async function createQuote(
   ctx: CreateContext<CreateBody>
 ): Promise<void> {
   const { body } = ctx.request
+  const { tenantId } = ctx.params
   const options: CreateQuoteOptions = {
+    tenantId,
     walletAddressId: ctx.walletAddress.id,
     receiver: body.receiver,
     client: ctx.client,

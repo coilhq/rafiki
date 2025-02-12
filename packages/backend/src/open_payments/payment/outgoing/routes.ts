@@ -54,6 +54,7 @@ async function getOutgoingPayment(
 ): Promise<void> {
   const outgoingPayment = await deps.outgoingPaymentService.get({
     id: ctx.params.id,
+    tenantId: ctx.params.tenantId,
     client: ctx.accessAction === AccessAction.Read ? ctx.client : undefined
   })
 
@@ -98,6 +99,7 @@ async function createOutgoingPayment(
 ): Promise<void> {
   const { body } = ctx.request
   const baseOptions: OutgoingPaymentCreateBaseOptions = {
+    tenantId: ctx.params.tenantId,
     walletAddressId: ctx.walletAddress.id,
     metadata: body.metadata,
     client: ctx.client,
@@ -148,7 +150,13 @@ async function listOutgoingPayments(
 ): Promise<void> {
   await listSubresource({
     ctx,
-    getWalletAddressPage: deps.outgoingPaymentService.getWalletAddressPage,
+    getWalletAddressPage: async ({ walletAddressId, pagination, client }) =>
+      deps.outgoingPaymentService.getWalletAddressPage({
+        walletAddressId,
+        pagination,
+        client,
+        tenantId: ctx.params.tenantId
+      }),
     toBody: (payment) => outgoingPaymentToBody(ctx.walletAddress, payment)
   })
 }

@@ -57,6 +57,7 @@ export function mockQuote(
 export async function createQuote(
   deps: IocContract<AppServices>,
   {
+    tenantId,
     walletAddressId,
     receiver: receiverUrl,
     debitAmount,
@@ -70,7 +71,10 @@ export async function createQuote(
   }: CreateTestQuoteOptions
 ): Promise<Quote> {
   const walletAddressService = await deps.use('walletAddressService')
-  const walletAddress = await walletAddressService.get(walletAddressId)
+  const walletAddress = await walletAddressService.get(
+    walletAddressId,
+    tenantId
+  )
   if (!walletAddress) {
     throw new Error('wallet not found')
   }
@@ -174,6 +178,7 @@ export async function createQuote(
   return Quote.query()
     .insertAndFetch({
       id: quoteId,
+      tenantId,
       walletAddressId,
       assetId: walletAddress.assetId,
       receiver: receiverUrl,

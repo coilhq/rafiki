@@ -12,19 +12,20 @@ import {
   errorToCode
 } from '../../open_payments/payment/outgoing/errors'
 import { OutgoingPayment } from '../../open_payments/payment/outgoing/model'
-import { ApolloContext } from '../../app'
+import { TenantedApolloContext } from '../../app'
 import { getPageInfo } from '../../shared/pagination'
 import { Pagination, SortOrder } from '../../shared/baseModel'
 import { GraphQLError } from 'graphql'
 import { GraphQLErrorCode } from '../errors'
 
-export const getOutgoingPayment: QueryResolvers<ApolloContext>['outgoingPayment'] =
+export const getOutgoingPayment: QueryResolvers<TenantedApolloContext>['outgoingPayment'] =
   async (parent, args, ctx): Promise<ResolversTypes['OutgoingPayment']> => {
     const outgoingPaymentService = await ctx.container.use(
       'outgoingPaymentService'
     )
     const payment = await outgoingPaymentService.get({
-      id: args.id
+      id: args.id,
+      tenantId: ctx.isOperator ? undefined : ctx.tenant.id
     })
     if (!payment) {
       throw new GraphQLError('payment does not exist', {
@@ -36,7 +37,7 @@ export const getOutgoingPayment: QueryResolvers<ApolloContext>['outgoingPayment'
     return paymentToGraphql(payment)
   }
 
-export const getOutgoingPayments: QueryResolvers<ApolloContext>['outgoingPayments'] =
+export const getOutgoingPayments: QueryResolvers<TenantedApolloContext>['outgoingPayments'] =
   async (
     parent,
     args,
@@ -45,10 +46,11 @@ export const getOutgoingPayments: QueryResolvers<ApolloContext>['outgoingPayment
     const outgoingPaymentService = await ctx.container.use(
       'outgoingPaymentService'
     )
-    const { filter, sortOrder, ...pagination } = args
+    const { tenantId, filter, sortOrder, ...pagination } = args
     const order = sortOrder === 'ASC' ? SortOrder.Asc : SortOrder.Desc
     const getPageFn = (pagination_: Pagination, sortOrder_?: SortOrder) =>
       outgoingPaymentService.getPage({
+        tenantId: ctx.isOperator ? tenantId : ctx.tenant.id,
         pagination: pagination_,
         filter,
         sortOrder: sortOrder_
@@ -71,7 +73,7 @@ export const getOutgoingPayments: QueryResolvers<ApolloContext>['outgoingPayment
     }
   }
 
-export const cancelOutgoingPayment: MutationResolvers<ApolloContext>['cancelOutgoingPayment'] =
+export const cancelOutgoingPayment: MutationResolvers<TenantedApolloContext>['cancelOutgoingPayment'] =
   async (
     parent,
     args,
@@ -81,9 +83,21 @@ export const cancelOutgoingPayment: MutationResolvers<ApolloContext>['cancelOutg
       'outgoingPaymentService'
     )
 
-    const outgoingPaymentOrError = await outgoingPaymentService.cancel(
-      args.input
-    )
+    const tenantId = ctx.tenant.id
+    if (!tenantId)
+      throw new GraphQLError(
+        `Assignment to the specified tenant is not permitted`,
+        {
+          extensions: {
+            code: GraphQLErrorCode.BadUserInput
+          }
+        }
+      )
+
+    const outgoingPaymentOrError = await outgoingPaymentService.cancel({
+      tenantId,
+      ...args.input
+    })
 
     if (isOutgoingPaymentError(outgoingPaymentOrError)) {
       throw new GraphQLError(errorToMessage[outgoingPaymentOrError], {
@@ -98,7 +112,7 @@ export const cancelOutgoingPayment: MutationResolvers<ApolloContext>['cancelOutg
     }
   }
 
-export const createOutgoingPayment: MutationResolvers<ApolloContext>['createOutgoingPayment'] =
+export const createOutgoingPayment: MutationResolvers<TenantedApolloContext>['createOutgoingPayment'] =
   async (
     parent,
     args,
@@ -107,9 +121,21 @@ export const createOutgoingPayment: MutationResolvers<ApolloContext>['createOutg
     const outgoingPaymentService = await ctx.container.use(
       'outgoingPaymentService'
     )
-    const outgoingPaymentOrError = await outgoingPaymentService.create(
-      args.input
-    )
+
+    const tenantId = ctx.tenant.id
+    if (!tenantId)
+      throw new GraphQLError(
+        `Assignment to the specified tenant is not permitted`,
+        {
+          extensions: {
+            code: GraphQLErrorCode.BadUserInput
+          }
+        }
+      )
+    const outgoingPaymentOrError = await outgoingPaymentService.create({
+      tenantId,
+      ...args.input
+    })
     if (isOutgoingPaymentError(outgoingPaymentOrError)) {
       throw new GraphQLError(errorToMessage[outgoingPaymentOrError], {
         extensions: {
@@ -122,7 +148,7 @@ export const createOutgoingPayment: MutationResolvers<ApolloContext>['createOutg
       }
   }
 
-export const createOutgoingPaymentFromIncomingPayment: MutationResolvers<ApolloContext>['createOutgoingPaymentFromIncomingPayment'] =
+export const createOutgoingPaymentFromIncomingPayment: MutationResolvers<TenantedApolloContext>['createOutgoingPaymentFromIncomingPayment'] =
   async (
     parent,
     args,
@@ -131,10 +157,20 @@ export const createOutgoingPaymentFromIncomingPayment: MutationResolvers<ApolloC
     const outgoingPaymentService = await ctx.container.use(
       'outgoingPaymentService'
     )
-
-    const outgoingPaymentOrError = await outgoingPaymentService.create(
-      args.input
-    )
+    const tenantId = ctx.tenant.id
+    if (!tenantId)
+      throw new GraphQLError(
+        `Assignment to the specified tenant is not permitted`,
+        {
+          extensions: {
+            code: GraphQLErrorCode.BadUserInput
+          }
+        }
+      )
+    const outgoingPaymentOrError = await outgoingPaymentService.create({
+      tenantId,
+      ...args.input
+    })
 
     if (isOutgoingPaymentError(outgoingPaymentOrError)) {
       throw new GraphQLError(errorToMessage[outgoingPaymentOrError], {
@@ -149,7 +185,7 @@ export const createOutgoingPaymentFromIncomingPayment: MutationResolvers<ApolloC
     }
   }
 
-export const getWalletAddressOutgoingPayments: WalletAddressResolvers<ApolloContext>['outgoingPayments'] =
+export const getWalletAddressOutgoingPayments: WalletAddressResolvers<TenantedApolloContext>['outgoingPayments'] =
   async (
     parent,
     args,
@@ -167,17 +203,20 @@ export const getWalletAddressOutgoingPayments: WalletAddressResolvers<ApolloCont
     )
     const { sortOrder, ...pagination } = args
     const order = sortOrder === 'ASC' ? SortOrder.Asc : SortOrder.Desc
+    const tenantId = ctx.isOperator ? undefined : ctx.tenant.id
     const outgoingPayments = await outgoingPaymentService.getWalletAddressPage({
       walletAddressId: parent.id,
       pagination,
-      sortOrder: order
+      sortOrder: order,
+      tenantId
     })
     const pageInfo = await getPageInfo({
       getPage: (pagination: Pagination, sortOrder?: SortOrder) =>
         outgoingPaymentService.getWalletAddressPage({
           walletAddressId: parent.id as string,
           pagination,
-          sortOrder
+          sortOrder,
+          tenantId
         }),
       page: outgoingPayments,
       sortOrder: order
@@ -208,6 +247,7 @@ export function paymentToGraphql(
     metadata: payment.metadata,
     createdAt: new Date(+payment.createdAt).toISOString(),
     quote: quoteToGraphql(payment.quote),
-    grantId: payment.grantId
+    grantId: payment.grantId,
+    tenantId: payment.tenantId
   }
 }

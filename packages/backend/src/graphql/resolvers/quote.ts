@@ -11,21 +11,22 @@ import {
   errorToMessage
 } from '../../open_payments/quote/errors'
 import { Quote } from '../../open_payments/quote/model'
-import { ApolloContext } from '../../app'
+import { ForTenantIdContext, TenantedApolloContext } from '../../app'
 import { getPageInfo } from '../../shared/pagination'
 import { Pagination, SortOrder } from '../../shared/baseModel'
 import { CreateQuoteOptions } from '../../open_payments/quote/service'
 import { GraphQLError } from 'graphql'
 import { GraphQLErrorCode } from '../errors'
 
-export const getQuote: QueryResolvers<ApolloContext>['quote'] = async (
+export const getQuote: QueryResolvers<TenantedApolloContext>['quote'] = async (
   parent,
   args,
   ctx
 ): Promise<ResolversTypes['Quote']> => {
   const quoteService = await ctx.container.use('quoteService')
   const quote = await quoteService.get({
-    id: args.id
+    id: args.id,
+    tenantId: ctx.tenant.id
   })
   if (!quote) {
     throw new GraphQLError('quote does not exist', {
@@ -37,10 +38,21 @@ export const getQuote: QueryResolvers<ApolloContext>['quote'] = async (
   return quoteToGraphql(quote)
 }
 
-export const createQuote: MutationResolvers<ApolloContext>['createQuote'] =
+export const createQuote: MutationResolvers<ForTenantIdContext>['createQuote'] =
   async (parent, args, ctx): Promise<ResolversTypes['QuoteResponse']> => {
     const quoteService = await ctx.container.use('quoteService')
+    const tenantId = ctx.forTenantId
+    if (!tenantId)
+      throw new GraphQLError(
+        `Assignment to the specified tenant is not permitted`,
+        {
+          extensions: {
+            code: GraphQLErrorCode.BadUserInput
+          }
+        }
+      )
     const options: CreateQuoteOptions = {
+      tenantId,
       walletAddressId: args.input.walletAddressId,
       receiver: args.input.receiver,
       method: 'ilp'
@@ -61,7 +73,7 @@ export const createQuote: MutationResolvers<ApolloContext>['createQuote'] =
       }
   }
 
-export const getWalletAddressQuotes: WalletAddressResolvers<ApolloContext>['quotes'] =
+export const getWalletAddressQuotes: WalletAddressResolvers<TenantedApolloContext>['quotes'] =
   async (parent, args, ctx): Promise<ResolversTypes['QuoteConnection']> => {
     if (!parent.id) {
       throw new GraphQLError('missing wallet address id', {
@@ -73,17 +85,20 @@ export const getWalletAddressQuotes: WalletAddressResolvers<ApolloContext>['quot
     const quoteService = await ctx.container.use('quoteService')
     const { sortOrder, ...pagination } = args
     const order = sortOrder === 'ASC' ? SortOrder.Asc : SortOrder.Desc
+    const tenantId = ctx.isOperator ? undefined : ctx.tenant.id
     const quotes = await quoteService.getWalletAddressPage({
       walletAddressId: parent.id,
       pagination,
-      sortOrder: order
+      sortOrder: order,
+      tenantId
     })
     const pageInfo = await getPageInfo({
       getPage: (pagination: Pagination, sortOrder?: SortOrder) =>
         quoteService.getWalletAddressPage({
           walletAddressId: parent.id as string,
           pagination,
-          sortOrder
+          sortOrder,
+          tenantId
         }),
       page: quotes,
       sortOrder: order
@@ -100,6 +115,7 @@ export const getWalletAddressQuotes: WalletAddressResolvers<ApolloContext>['quot
 export function quoteToGraphql(quote: Quote): SchemaQuote {
   return {
     id: quote.id,
+    tenantId: quote.tenantId,
     walletAddressId: quote.walletAddressId,
     receiver: quote.receiver,
     debitAmount: quote.debitAmount,

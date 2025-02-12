@@ -36,6 +36,7 @@ describe('IlpPaymentService', (): void => {
   let ilpPaymentService: IlpPaymentService
   let accountingService: AccountingService
   let config: IAppConfig
+  let tenantId: string
 
   const exchangeRatesUrl = 'https://example-rates.com'
 
@@ -56,6 +57,7 @@ describe('IlpPaymentService', (): void => {
   })
 
   beforeEach(async (): Promise<void> => {
+    tenantId = Config.operatorTenantId
     assetMap['USD'] = await createAsset(deps, {
       code: 'USD',
       scale: 2
@@ -67,12 +69,12 @@ describe('IlpPaymentService', (): void => {
     })
 
     walletAddressMap['USD'] = await createWalletAddress(deps, {
-      tenantId: Config.operatorTenantId,
+      tenantId,
       assetId: assetMap['USD'].id
     })
 
     walletAddressMap['EUR'] = await createWalletAddress(deps, {
-      tenantId: Config.operatorTenantId,
+      tenantId,
       assetId: assetMap['EUR'].id
     })
   })
@@ -667,6 +669,7 @@ describe('IlpPaymentService', (): void => {
           receivingWalletAddress: walletAddressMap['USD'],
           method: 'ilp',
           quoteOptions: {
+            tenantId,
             debitAmount: {
               value: 100n,
               assetScale: walletAddressMap['USD'].asset.scale,
@@ -697,6 +700,7 @@ describe('IlpPaymentService', (): void => {
           receivingWalletAddress: walletAddressMap['USD'],
           method: 'ilp',
           quoteOptions: {
+            tenantId,
             exchangeRate: 1,
             debitAmount: {
               value: 100n,
@@ -747,6 +751,7 @@ describe('IlpPaymentService', (): void => {
           receivingWalletAddress: walletAddressMap['USD'],
           method: 'ilp',
           quoteOptions: {
+            tenantId,
             debitAmount: {
               value: 100n,
               assetScale: walletAddressMap['USD'].asset.scale,
@@ -787,6 +792,7 @@ describe('IlpPaymentService', (): void => {
           receivingWalletAddress: walletAddressMap['USD'],
           method: 'ilp',
           quoteOptions: {
+            tenantId,
             debitAmount: {
               value: 100n,
               assetScale: walletAddressMap['USD'].asset.scale,
@@ -827,6 +833,7 @@ describe('IlpPaymentService', (): void => {
           receivingWalletAddress: walletAddressMap['USD'],
           method: 'ilp',
           quoteOptions: {
+            tenantId,
             debitAmount: {
               value: 100n,
               assetScale: walletAddressMap['USD'].asset.scale,
@@ -864,6 +871,7 @@ describe('IlpPaymentService', (): void => {
           receivingWalletAddress: walletAddressMap['USD'],
           method: 'ilp',
           quoteOptions: {
+            tenantId,
             debitAmount: {
               value: 100n,
               assetScale: walletAddressMap['USD'].asset.scale,

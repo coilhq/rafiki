@@ -74,7 +74,7 @@ type Query {
     tenantId: String
   ): WalletAddressesConnection!
 
-  "Fetch an Open Payments quote by its ID."
+  "Fetch an Open Payments quote by its ID and tenant ID."
   quote("Unique identifier of the quote." id: String!): Quote
 
   "Fetch an Open Payments outgoing payment by its ID."
@@ -97,6 +97,8 @@ type Query {
     sortOrder: SortOrder
     "Filter outgoing payments based on specific criteria such as receiver, wallet address ID, or state."
     filter: OutgoingPaymentFilter
+    "Unique identifier of the tenant associated with the wallet address. Optional, if not provided, the tenantId will be obtained from the signature."
+    tenantId: String
   ): OutgoingPaymentConnection!
 
   "Fetch an Open Payments incoming payment by its ID."
@@ -135,6 +137,8 @@ type Query {
     sortOrder: SortOrder
     "Filter payment events based on specific criteria such as payment type or wallet address ID."
     filter: PaymentFilter
+    "Unique identifier of the tenant associated with the wallet address. Optional, if not provided, the tenantId will be obtained from the signature."
+    tenantId: String
   ): PaymentConnection!
 
   "Fetch a paginated list of accounting transfers for a given account."
@@ -1019,6 +1023,8 @@ type OutgoingPayment implements BasePayment & Model {
   createdAt: String!
   "Unique identifier of the grant under which the outgoing payment was created."
   grantId: String
+  "Tenant ID of the wallet address."
+  tenantId: String
 }
 
 enum OutgoingPaymentState {
@@ -1142,6 +1148,8 @@ type QuoteEdge {
 type Quote {
   "Unique identifier of the quote."
   id: ID!
+  "Unique identifier of the tenant under which the quote was created."
+  tenantId: ID!
   "Unique identifier of the wallet address under which the quote was created."
   walletAddressId: ID!
   "Wallet address URL of the receiver."

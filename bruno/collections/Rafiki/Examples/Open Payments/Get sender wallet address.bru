@@ -37,7 +37,7 @@ script:post-response {
       authUrl.hostname.includes('happy-life-bank')
   ){
       const port = authUrl.hostname.includes('cloud-nine-wallet')? authUrl.port: Number(authUrl.port) + 1000
-      bru.setEnvVar("senderOpenPaymentsAuthHost", authUrl.protocol + '//localhost:' + port + authUrl.path );
+      bru.setEnvVar("senderOpenPaymentsAuthHost", authUrl.protocol + '//localhost:' + port + authUrl.path);
   } else {
       bru.setEnvVar("senderOpenPaymentsAuthHost", body?.authServer);
   }

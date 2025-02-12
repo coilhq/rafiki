@@ -74,6 +74,7 @@ describe('Pagination', (): void => {
   })
   describe('getPageInfo', (): void => {
     describe('wallet address resources', (): void => {
+      let tenantId: string
       let defaultWalletAddress: WalletAddress
       let secondaryWalletAddress: WalletAddress
       let debitAmount: Amount
@@ -83,13 +84,14 @@ describe('Pagination', (): void => {
         outgoingPaymentService = await deps.use('outgoingPaymentService')
         quoteService = await deps.use('quoteService')
 
+        tenantId = Config.operatorTenantId
         const asset = await createAsset(deps)
         defaultWalletAddress = await createWalletAddress(deps, {
-          tenantId: Config.operatorTenantId,
+          tenantId,
           assetId: asset.id
         })
         secondaryWalletAddress = await createWalletAddress(deps, {
-          tenantId: Config.operatorTenantId,
+          tenantId,
           assetId: asset.id
         })
         debitAmount = {
@@ -174,6 +176,7 @@ describe('Pagination', (): void => {
             const paymentIds: string[] = []
             for (let i = 0; i < num; i++) {
               const payment = await createOutgoingPayment(deps, {
+                tenantId,
                 walletAddressId: defaultWalletAddress.id,
                 receiver: secondaryWalletAddress.url,
                 method: 'ilp',
@@ -231,6 +234,7 @@ describe('Pagination', (): void => {
             const quoteIds: string[] = []
             for (let i = 0; i < num; i++) {
               const quote = await createQuote(deps, {
+                tenantId,
                 walletAddressId: defaultWalletAddress.id,
                 receiver: secondaryWalletAddress.url,
                 debitAmount,

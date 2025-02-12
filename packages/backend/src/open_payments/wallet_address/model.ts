@@ -191,6 +191,7 @@ export interface GetOptions {
   id: string
   client?: string
   walletAddressId?: string
+  tenantId?: string
 }
 
 export interface ListOptions {
@@ -198,6 +199,7 @@ export interface ListOptions {
   client?: string
   pagination?: Pagination
   sortOrder?: SortOrder
+  tenantId?: string
 }
 
 class SubresourceQueryBuilder<
