@@ -4,7 +4,7 @@ services:
     hostname: cloud-nine-wallet-test-backend
     image: rafiki-backend
     build:
-      context: ../../../..
+      context: ../../..
       dockerfile: ./packages/backend/Dockerfile.prod
     restart: always
     privileged: true
@@ -48,7 +48,7 @@ services:
     hostname: cloud-nine-wallet-test-auth
     image: rafiki-auth
     build:
-      context: ../../../..
+      context: ../../..
       dockerfile: ./packages/auth/Dockerfile.prod
     restart: always
     networks:

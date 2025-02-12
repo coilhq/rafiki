@@ -1,10 +1,9 @@
 import assert from 'assert'
-import { C9_CONFIG, HLB_CONFIG } from './lib/config'
-import { MockASE } from './lib/mock-ase'
+import { MockASE, C9_CONFIG, HLB_CONFIG } from 'test-lib'
 import { Fee, WebhookEventType } from 'mock-account-service-lib'
 import { poll } from './lib/utils'
 import { TestActions, createTestActions } from './lib/test-actions'
-import { IncomingPaymentState } from './lib/generated/graphql'
+import { IncomingPaymentState } from 'test-lib/dist/generated/graphql'
 
 jest.setTimeout(20_000)
 

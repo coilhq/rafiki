@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build:deps": "pnpm --filter mock-account-service-lib build",
-    "testenv:compose": "docker compose -f ./testenv/cloud-nine-wallet/docker-compose.yml -f ./testenv/happy-life-bank/docker-compose.yml -f ./testenv/docker-compose.yml",
+    "build:deps": "pnpm --filter mock-account-service-lib build && pnpm --filter test-lib build",
+    "testenv:compose": "docker compose -f ../testenv/cloud-nine-wallet/docker-compose.yml -f ../testenv/happy-life-bank/docker-compose.yml -f ../testenv/docker-compose.yml",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "run-tests": "./scripts/run-tests.sh",
     "hostile": "hostile"
@@ -14,19 +14,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@apollo/client": "^3.11.8",
-    "@interledger/http-signature-utils": "2.0.2",
     "@interledger/open-payments": "6.13.2",
-    "@koa/bodyparser": "^5.1.1",
-    "@types/koa": "2.15.0",
-    "@types/koa-bodyparser": "^4.3.12",
     "@types/node": "^20.14.15",
-    "dotenv": "^16.4.7",
-    "graphql": "^16.8.1",
     "hostile": "^1.4.0",
-    "json-canonicalize": "^1.0.6",
-    "koa": "^2.15.3",
     "mock-account-service-lib": "workspace:*",
-    "yaml": "^2.7.0"
+    "test-lib": "workspace:*"
   }
 }

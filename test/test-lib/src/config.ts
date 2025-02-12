@@ -58,9 +58,9 @@ const loadEnv = (filePath: string): EnvConfig => {
 }
 
 const createConfig = (name: string): TestConfig => {
-  const seedPath = resolve(__dirname, `../testenv/${name}/seed.yml`)
-  const env = loadEnv(resolve(__dirname, `../testenv/${name}/.env`))
-  const keyPath = resolve(__dirname, `../testenv/private-key.pem`)
+  const seedPath = resolve(__dirname, `../../testenv/${name}/seed.yml`)
+  const env = loadEnv(resolve(__dirname, `../../testenv/${name}/.env`))
+  const keyPath = resolve(__dirname, `../../testenv/private-key.pem`)
 
   return {
     seed: parse(readFileSync(seedPath).toString('utf8')),

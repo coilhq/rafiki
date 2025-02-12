@@ -1,42 +1,42 @@
 assets:
   - code: USD
     scale: 2
-    liquidity: 1000000
-    liquidityThreshold: 100000
+    liquidity: 100000000
+    liquidityThreshold: 10000000
   - code: EUR
     scale: 2
-    liquidity: 1000000
-    liquidityThreshold: 100000
+    liquidity: 100000000
+    liquidityThreshold: 10000000
   - code: MXN
     scale: 2
-    liquidity: 1000000
-    liquidityThreshold: 100000
+    liquidity: 100000000
+    liquidityThreshold: 10000000
   - code: JPY
     scale: 0
-    liquidity: 10000
-    liquidityThreshold: 1000
+    liquidity: 1000000
+    liquidityThreshold: 100000
 peeringAsset: 'USD'
 peers:
-  - initialLiquidity: '100000'
+  - initialLiquidity: '10000000'
     peerUrl: http://happy-life-bank-test-backend:4102
     peerIlpAddress: test.happy-life-bank-test
-    liquidityThreshold: 10000
+    liquidityThreshold: 1000000
 accounts:
   - name: 'Grace Franklin'
     path: accounts/gfranklin
     id: 742ab7cd-1624-4d2e-af6e-e15a71638669
-    initialBalance: 50000
+    initialBalance: 40000000
     postmanEnvVar: gfranklinWalletAddress
     assetCode: USD
   - name: 'Bert Hamchest'
     id: a9adbe1a-df31-4766-87c9-d2cb2e636a9b
-    initialBalance: 50000
+    initialBalance: 40000000
     path: accounts/bhamchest
     postmanEnvVar: bhamchestWalletAddress
     assetCode: USD
   - name: "World's Best Donut Co"
     id: 5726eefe-8737-459d-a36b-0acce152cb90
-    initialBalance: 2000
+    initialBalance: 20000000
     path: accounts/wbdc
     postmanEnvVar: wbdcWalletAddress
     assetCode: USD

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { MockASE } from '../mock-ase'
+import type { MockASE } from 'test-lib'
 import { parseCookies } from '../utils'
 import { WalletAddress, PendingGrant } from '@interledger/open-payments'
 import { AdminActions, createAdminActions } from './admin'

@@ -3,18 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "k6 run ./scripts/create-outgoing-payments.js",
-    "test-docker": "docker run --rm --network=rafiki_rafiki -v ./scripts:/scripts -v ./dist:/dist -i grafana/k6 run /scripts/create-outgoing-payments.js",
+    "run-tests:testenv": "./scripts/run-tests.sh -e test",
+    "run-tests-docker:testenv": "./scripts/run-tests.sh -e test --docker",
     "run-tests": "./scripts/run-tests.sh",
     "run-tests-docker": "./scripts/run-tests.sh --docker",
     "hostile": "hostile",
-    "bundle": "webpack"
+    "bundle": "webpack",
+    "testenv:compose": "docker compose -f ../testenv/cloud-nine-wallet/docker-compose.yml -f ../testenv/happy-life-bank/docker-compose.yml -f ../testenv/docker-compose.yml",
+    "start-mases": "node ./scripts/start-mases.js",
+    "build:deps": "pnpm --filter test-lib build:deps && pnpm --filter test-lib build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hostile": "^1.4.0"
+    "hostile": "^1.4.0",
+    "test-lib": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",

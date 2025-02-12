@@ -53,7 +53,7 @@ generates:
       scalars:
         UInt8: number
         UInt64: bigint
-  ../../test/integration/lib/generated/graphql.ts:
+  ../../test/test-lib/src/generated/graphql.ts:
     plugins:
       - 'typescript'
       - 'typescript-resolvers'

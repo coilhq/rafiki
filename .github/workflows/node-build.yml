@@ -159,6 +159,135 @@ jobs:
       - name: Run tests
         run: pnpm --filter integration run-tests
 
+  performance-test:
+    runs-on: ubuntu-22.04
+    needs: prerequisite
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup environment
+        uses: ./.github/workflows/rafiki/env-setup
+
+      - name: Set up k6
+        uses: grafana/setup-k6-action@v1
+
+      - name: Setup hosts
+        run: |
+          echo "127.0.0.1 cloud-nine-wallet-test-backend" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 cloud-nine-wallet-test-auth" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 happy-life-bank-test-backend" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 happy-life-bank-test-auth" | sudo tee -a /etc/hosts
+
+      - name: Build dependencies
+        run: pnpm --filter performance build:deps
+
+      - name: Bundle
+        run: pnpm --filter performance bundle
+
+      - name: Start test environment
+        run: pnpm --filter performance testenv:compose up --wait --build -d
+
+      - name: Start Mock Account Entity Services
+        run: nohup pnpm --filter performance start-mases > mases.log 2>&1 &
+
+      - name: Run performance tests
+        id: perf_test
+        run: |
+          pnpm --filter performance run-tests:testenv -k --vus 4 --duration 1m | tee performance.log
+        continue-on-error: true # Don't fail here, allows showing logs
+
+      - name: Print MASE logs
+        if: always()
+        run: cat mases.log
+
+      - name: Post/Update Performance Test Results as PR Comment
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const summaryPath = './test/performance/k6-test-summary.txt';
+            const logPath = './performance.log';
+            let summaryContent = '';
+            let logContent = '';
+
+            // Read the k6 summary file
+            if (fs.existsSync(summaryPath)) {
+              summaryContent = fs.readFileSync(summaryPath, 'utf8');
+            } else {
+              summaryContent = 'Performance test summary not found.';
+            }
+
+            // Read the full logs
+            if (fs.existsSync(logPath)) {
+              logContent = fs.readFileSync(logPath, 'utf8');
+            } else {
+              logContent = 'Performance log not found.';
+            }
+
+            // Limit in case large file size to avoid error posting comment (65kb limit)
+            // https://github.com/orgs/community/discussions/41331
+            const maxLogSize = 60000;
+            const truncatedLogs = logContent.length > maxLogSize ? `...(truncated)...\n${logContent.slice(-maxLogSize)}` : logContent;
+
+
+            const commentBody = `
+            ### 🚀 Performance Test Results  
+
+            ${summaryContent}
+
+            <details>
+            <summary>📜 Logs</summary>
+
+            \`\`\`
+            ${truncatedLogs}
+            \`\`\`
+
+            </details>
+            `;
+
+            const { owner, repo } = context.repo;
+            const prNumber = context.payload.pull_request?.number;
+
+            if (prNumber) {
+              const comments = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: prNumber
+              });
+
+              // Identify existing comment via title
+              const existingComment = comments.data.find(comment => comment.body.includes('🚀 Performance Test Results'));
+
+              if (existingComment) { // upsert comment
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existingComment.id,
+                  body: commentBody
+                });
+              } else {
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  body: commentBody
+                });
+              }
+            } else {
+              console.log("No PR detected, skipping comment.");
+            }
+
+      - name: Fail if performance tests failed
+        if: steps.perf_test.outcome == 'failure'
+        run: exit 1
+
+
+
+
   node-build:
     runs-on: ubuntu-latest
     timeout-minutes: 5

@@ -1,26 +1,26 @@
 assets:
   - code: USD
     scale: 2
-    liquidity: 1000000
-    liquidityThreshold: 100000
+    liquidity: 10000000000
+    liquidityThreshold: 100000000
   - code: EUR
     scale: 2
-    liquidity: 1000000
-    liquidityThreshold: 100000
+    liquidity: 10000000000
+    liquidityThreshold: 1000000
   - code: MXN
     scale: 2
-    liquidity: 1000000
-    liquidityThreshold: 100000
+    liquidity: 10000000000
+    liquidityThreshold: 10000000
   - code: JPY
     scale: 0
-    liquidity: 10000
-    liquidityThreshold: 1000
+    liquidity: 1000000000
+    liquidityThreshold: 1000000
 peeringAsset: 'USD'
 peers:
   - initialLiquidity: '1000000000000'
     peerUrl: http://cloud-nine-wallet-test-backend:3102
     peerIlpAddress: test.cloud-nine-wallet-test
-    liquidityThreshold: 100000
+    liquidityThreshold: 1000000
 accounts:
   - name: 'Philip Fry'
     path: accounts/pfry
@@ -30,26 +30,26 @@ accounts:
     assetCode: USD
   - name: 'PlanEx Corp'
     id: a455cc54-b583-455b-836a-e5275c5c05b7
-    initialBalance: 2000
+    initialBalance: 2000000
     path: accounts/planex
     postmanEnvVar: planexWalletAddress
     assetCode: USD
   - name: 'Alice Smith'
     path: accounts/asmith
     id: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    initialBalance: 500
+    initialBalance: 5000000
     postmanEnvVar: asmithWalletAddress
     skipWalletAddressCreation: true
     assetCode: USD
   - name: 'Lars'
     path: accounts/lars
     id: fd4ecbc9-205d-4ecd-a030-507d6ce2bde6
-    initialBalance: 50000
+    initialBalance: 50000000
     assetCode: EUR
   - name: 'David'
     path: accounts/david
     id: 60257507-3191-4507-9d77-9071fd6b3c30
-    initialBalance: 150000
+    initialBalance: 1500000000
     assetCode: MXN
 rates:
   EUR:

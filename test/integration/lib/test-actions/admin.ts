@@ -7,8 +7,8 @@ import {
   CreateReceiverInput,
   IncomingPayment,
   CreateQuoteInput
-} from '../generated/graphql'
-import { MockASE } from '../mock-ase'
+} from 'test-lib/dist/generated/graphql'
+import type { MockASE } from 'test-lib'
 import { pollCondition } from '../utils'
 import { WebhookEventType } from 'mock-account-service-lib'
 

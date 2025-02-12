@@ -1,10 +1,12 @@
 {
   "__schema": {
     "queryType": {
-      "name": "Query"
+      "name": "Query",
+      "kind": "OBJECT"
     },
     "mutationType": {
-      "name": "Mutation"
+      "name": "Mutation",
+      "kind": "OBJECT"
     },
     "subscriptionType": null,
     "types": [
@@ -12,6 +14,7 @@
         "kind": "OBJECT",
         "name": "AccountingTransfer",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "amount",
@@ -169,6 +172,7 @@
         "kind": "OBJECT",
         "name": "AccountingTransferConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "credits",
@@ -228,6 +232,7 @@
         "kind": "OBJECT",
         "name": "AdditionalProperty",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "key",
@@ -287,6 +292,7 @@
         "kind": "INPUT_OBJECT",
         "name": "AdditionalPropertyInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -346,6 +352,7 @@
         "kind": "ENUM",
         "name": "Alg",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -363,6 +370,7 @@
         "kind": "OBJECT",
         "name": "Amount",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "assetCode",
@@ -422,6 +430,7 @@
         "kind": "INPUT_OBJECT",
         "name": "AmountInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -481,6 +490,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ApproveIncomingPaymentInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -508,6 +518,7 @@
         "kind": "OBJECT",
         "name": "ApproveIncomingPaymentResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "payment",
@@ -531,6 +542,7 @@
         "kind": "OBJECT",
         "name": "Asset",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "code",
@@ -745,6 +757,7 @@
         "kind": "OBJECT",
         "name": "AssetEdge",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cursor",
@@ -788,6 +801,7 @@
         "kind": "OBJECT",
         "name": "AssetMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "asset",
@@ -811,6 +825,7 @@
         "kind": "OBJECT",
         "name": "AssetsConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "edges",
@@ -862,6 +877,7 @@
         "kind": "INTERFACE",
         "name": "BasePayment",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "client",
@@ -961,6 +977,7 @@
         "kind": "SCALAR",
         "name": "Boolean",
         "description": "The `Boolean` scalar type represents `true` or `false`.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -971,6 +988,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CancelIncomingPaymentInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -998,6 +1016,7 @@
         "kind": "OBJECT",
         "name": "CancelIncomingPaymentResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "payment",
@@ -1021,6 +1040,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CancelOutgoingPaymentInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1060,6 +1080,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateAssetInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1139,6 +1160,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateAssetLiquidityWithdrawalInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1230,6 +1252,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateIncomingPaymentInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1305,6 +1328,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateIncomingPaymentWithdrawalInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1364,6 +1388,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateOrUpdatePeerByUrlInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1467,6 +1492,7 @@
         "kind": "OBJECT",
         "name": "CreateOrUpdatePeerByUrlMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "peer",
@@ -1490,6 +1516,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateOutgoingPaymentFromIncomingPaymentInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1573,6 +1600,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateOutgoingPaymentInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1640,6 +1668,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateOutgoingPaymentWithdrawalInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1699,6 +1728,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreatePeerInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1818,6 +1848,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreatePeerLiquidityWithdrawalInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1909,6 +1940,7 @@
         "kind": "OBJECT",
         "name": "CreatePeerMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "peer",
@@ -1932,6 +1964,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateQuoteInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2011,6 +2044,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateReceiverInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2086,6 +2120,7 @@
         "kind": "OBJECT",
         "name": "CreateReceiverResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "receiver",
@@ -2109,6 +2144,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateWalletAddressInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2196,6 +2232,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateWalletAddressKeyInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2251,6 +2288,7 @@
         "kind": "OBJECT",
         "name": "CreateWalletAddressKeyMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "walletAddressKey",
@@ -2274,6 +2312,7 @@
         "kind": "OBJECT",
         "name": "CreateWalletAddressMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "walletAddress",
@@ -2297,6 +2336,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CreateWalletAddressWithdrawalInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2372,6 +2412,7 @@
         "kind": "ENUM",
         "name": "Crv",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2389,6 +2430,7 @@
         "kind": "INPUT_OBJECT",
         "name": "DeleteAssetInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2428,6 +2470,7 @@
         "kind": "OBJECT",
         "name": "DeleteAssetMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "asset",
@@ -2451,6 +2494,7 @@
         "kind": "INPUT_OBJECT",
         "name": "DeletePeerInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2490,6 +2534,7 @@
         "kind": "OBJECT",
         "name": "DeletePeerMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -2517,6 +2562,7 @@
         "kind": "INPUT_OBJECT",
         "name": "DepositAssetLiquidityInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2592,6 +2638,7 @@
         "kind": "INPUT_OBJECT",
         "name": "DepositEventLiquidityInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2635,6 +2682,7 @@
         "kind": "INPUT_OBJECT",
         "name": "DepositOutgoingPaymentLiquidityInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2678,6 +2726,7 @@
         "kind": "INPUT_OBJECT",
         "name": "DepositPeerLiquidityInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2753,6 +2802,7 @@
         "kind": "OBJECT",
         "name": "Fee",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "assetId",
@@ -2866,6 +2916,7 @@
         "kind": "INPUT_OBJECT",
         "name": "FeeDetails",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2909,6 +2960,7 @@
         "kind": "OBJECT",
         "name": "FeeEdge",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cursor",
@@ -2952,6 +3004,7 @@
         "kind": "ENUM",
         "name": "FeeType",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2975,6 +3028,7 @@
         "kind": "OBJECT",
         "name": "FeesConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "edges",
@@ -3026,6 +3080,7 @@
         "kind": "INPUT_OBJECT",
         "name": "FilterString",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -3061,6 +3116,7 @@
         "kind": "SCALAR",
         "name": "Float",
         "description": "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3071,6 +3127,7 @@
         "kind": "OBJECT",
         "name": "Http",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "outgoing",
@@ -3098,6 +3155,7 @@
         "kind": "INPUT_OBJECT",
         "name": "HttpIncomingInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -3133,6 +3191,7 @@
         "kind": "INPUT_OBJECT",
         "name": "HttpInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -3172,6 +3231,7 @@
         "kind": "OBJECT",
         "name": "HttpOutgoing",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authToken",
@@ -3215,6 +3275,7 @@
         "kind": "INPUT_OBJECT",
         "name": "HttpOutgoingInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -3258,6 +3319,7 @@
         "kind": "SCALAR",
         "name": "ID",
         "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3268,6 +3330,7 @@
         "kind": "OBJECT",
         "name": "IncomingPayment",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "client",
@@ -3434,6 +3497,7 @@
         "kind": "OBJECT",
         "name": "IncomingPaymentConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "edges",
@@ -3485,6 +3549,7 @@
         "kind": "OBJECT",
         "name": "IncomingPaymentEdge",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cursor",
@@ -3528,6 +3593,7 @@
         "kind": "OBJECT",
         "name": "IncomingPaymentResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "payment",
@@ -3551,6 +3617,7 @@
         "kind": "ENUM",
         "name": "IncomingPaymentState",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3586,6 +3653,7 @@
         "kind": "SCALAR",
         "name": "Int",
         "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3596,6 +3664,7 @@
         "kind": "SCALAR",
         "name": "JSONObject",
         "description": "The `JSONObject` scalar type represents JSON objects as specified by the [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf) standard.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3606,6 +3675,7 @@
         "kind": "OBJECT",
         "name": "Jwk",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "alg",
@@ -3697,6 +3767,7 @@
         "kind": "INPUT_OBJECT",
         "name": "JwkInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -3788,6 +3859,7 @@
         "kind": "ENUM",
         "name": "Kty",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3805,6 +3877,7 @@
         "kind": "ENUM",
         "name": "LiquidityError",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3888,6 +3961,7 @@
         "kind": "OBJECT",
         "name": "LiquidityMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -3915,6 +3989,7 @@
         "kind": "INTERFACE",
         "name": "Model",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -4009,6 +4084,7 @@
         "kind": "OBJECT",
         "name": "Mutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "approveIncomingPayment",
@@ -5086,6 +5162,7 @@
         "kind": "OBJECT",
         "name": "OutgoingPayment",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "client",
@@ -5324,6 +5401,7 @@
         "kind": "OBJECT",
         "name": "OutgoingPaymentConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "edges",
@@ -5375,6 +5453,7 @@
         "kind": "OBJECT",
         "name": "OutgoingPaymentEdge",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cursor",
@@ -5418,6 +5497,7 @@
         "kind": "INPUT_OBJECT",
         "name": "OutgoingPaymentFilter",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -5465,6 +5545,7 @@
         "kind": "OBJECT",
         "name": "OutgoingPaymentResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "payment",
@@ -5488,6 +5569,7 @@
         "kind": "ENUM",
         "name": "OutgoingPaymentState",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -5529,6 +5611,7 @@
         "kind": "OBJECT",
         "name": "PageInfo",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "endCursor",
@@ -5596,6 +5679,7 @@
         "kind": "OBJECT",
         "name": "Payment",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "client",
@@ -5734,6 +5818,7 @@
         "kind": "OBJECT",
         "name": "PaymentConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "edges",
@@ -5785,6 +5870,7 @@
         "kind": "OBJECT",
         "name": "PaymentEdge",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cursor",
@@ -5828,6 +5914,7 @@
         "kind": "INPUT_OBJECT",
         "name": "PaymentFilter",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -5863,6 +5950,7 @@
         "kind": "ENUM",
         "name": "PaymentType",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -5886,6 +5974,7 @@
         "kind": "OBJECT",
         "name": "Peer",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "asset",
@@ -6031,6 +6120,7 @@
         "kind": "OBJECT",
         "name": "PeerEdge",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cursor",
@@ -6074,6 +6164,7 @@
         "kind": "OBJECT",
         "name": "PeersConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "edges",
@@ -6125,6 +6216,7 @@
         "kind": "INPUT_OBJECT",
         "name": "PostLiquidityWithdrawalInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -6168,6 +6260,7 @@
         "kind": "OBJECT",
         "name": "Query",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "accountingTransfers",
@@ -7044,6 +7137,7 @@
         "kind": "OBJECT",
         "name": "Quote",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -7179,6 +7273,7 @@
         "kind": "OBJECT",
         "name": "QuoteConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "edges",
@@ -7230,6 +7325,7 @@
         "kind": "OBJECT",
         "name": "QuoteEdge",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cursor",
@@ -7273,6 +7369,7 @@
         "kind": "OBJECT",
         "name": "QuoteResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "quote",
@@ -7296,6 +7393,7 @@
         "kind": "OBJECT",
         "name": "Receiver",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "completed",
@@ -7439,6 +7537,7 @@
         "kind": "INPUT_OBJECT",
         "name": "RevokeWalletAddressKeyInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -7478,6 +7577,7 @@
         "kind": "OBJECT",
         "name": "RevokeWalletAddressKeyMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "walletAddressKey",
@@ -7501,6 +7601,7 @@
         "kind": "INPUT_OBJECT",
         "name": "SetFeeInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -7572,6 +7673,7 @@
         "kind": "OBJECT",
         "name": "SetFeeResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fee",
@@ -7595,6 +7697,7 @@
         "kind": "ENUM",
         "name": "SortOrder",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -7618,6 +7721,7 @@
         "kind": "SCALAR",
         "name": "String",
         "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -7628,6 +7732,7 @@
         "kind": "ENUM",
         "name": "TransferState",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -7657,6 +7762,7 @@
         "kind": "ENUM",
         "name": "TransferType",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -7686,6 +7792,7 @@
         "kind": "INPUT_OBJECT",
         "name": "TriggerWalletAddressEventsInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -7725,6 +7832,7 @@
         "kind": "OBJECT",
         "name": "TriggerWalletAddressEventsMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "count",
@@ -7748,6 +7856,7 @@
         "kind": "SCALAR",
         "name": "UInt8",
         "description": "The `UInt8` scalar type represents unsigned 8-bit whole numeric values, ranging from 0 to 255.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -7758,6 +7867,7 @@
         "kind": "SCALAR",
         "name": "UInt64",
         "description": "The `UInt64` scalar type represents unsigned 64-bit whole numeric values. It is capable of handling values that are larger than the JavaScript `Number` type limit (greater than 2^53).",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -7768,6 +7878,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UpdateAssetInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -7831,6 +7942,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UpdateIncomingPaymentInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -7874,6 +7986,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UpdatePeerInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -7973,6 +8086,7 @@
         "kind": "OBJECT",
         "name": "UpdatePeerMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "peer",
@@ -7996,6 +8110,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UpdateWalletAddressInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8079,6 +8194,7 @@
         "kind": "OBJECT",
         "name": "UpdateWalletAddressMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "walletAddress",
@@ -8102,6 +8218,7 @@
         "kind": "INPUT_OBJECT",
         "name": "VoidLiquidityWithdrawalInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8145,6 +8262,7 @@
         "kind": "OBJECT",
         "name": "WalletAddress",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "additionalProperties",
@@ -8574,6 +8692,7 @@
         "kind": "OBJECT",
         "name": "WalletAddressEdge",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cursor",
@@ -8617,6 +8736,7 @@
         "kind": "OBJECT",
         "name": "WalletAddressKey",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -8714,6 +8834,7 @@
         "kind": "OBJECT",
         "name": "WalletAddressKeyConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "edges",
@@ -8765,6 +8886,7 @@
         "kind": "OBJECT",
         "name": "WalletAddressKeyEdge",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cursor",
@@ -8808,6 +8930,7 @@
         "kind": "ENUM",
         "name": "WalletAddressStatus",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -8831,6 +8954,7 @@
         "kind": "OBJECT",
         "name": "WalletAddressWithdrawal",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "amount",
@@ -8890,6 +9014,7 @@
         "kind": "OBJECT",
         "name": "WalletAddressWithdrawalMutationResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "withdrawal",
@@ -8913,6 +9038,7 @@
         "kind": "OBJECT",
         "name": "WalletAddressesConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "edges",
@@ -8964,6 +9090,7 @@
         "kind": "OBJECT",
         "name": "WebhookEvent",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -9045,6 +9172,7 @@
         "kind": "INPUT_OBJECT",
         "name": "WebhookEventFilter",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9068,6 +9196,7 @@
         "kind": "OBJECT",
         "name": "WebhookEventsConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "edges",
@@ -9119,6 +9248,7 @@
         "kind": "OBJECT",
         "name": "WebhookEventsEdge",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cursor",
@@ -9162,6 +9292,7 @@
         "kind": "INPUT_OBJECT",
         "name": "WithdrawEventLiquidityInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9205,6 +9336,7 @@
         "kind": "OBJECT",
         "name": "__Directive",
         "description": "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -9321,6 +9453,7 @@
         "kind": "ENUM",
         "name": "__DirectiveLocation",
         "description": "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -9446,6 +9579,7 @@
         "kind": "OBJECT",
         "name": "__EnumValue",
         "description": "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -9513,6 +9647,7 @@
         "kind": "OBJECT",
         "name": "__Field",
         "description": "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -9633,6 +9768,7 @@
         "kind": "OBJECT",
         "name": "__InputValue",
         "description": "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -9728,6 +9864,7 @@
         "kind": "OBJECT",
         "name": "__Schema",
         "description": "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "description",
@@ -9839,6 +9976,7 @@
         "kind": "OBJECT",
         "name": "__Type",
         "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByURL`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "kind",
@@ -10042,6 +10180,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "isOneOf",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -10053,6 +10203,7 @@
         "kind": "ENUM",
         "name": "__TypeKind",
         "description": "An enum describing what kind of type a given `__Type` is.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -10162,6 +10313,15 @@
             "deprecationReason": null
           }
         ]
+      },
+      {
+        "name": "oneOf",
+        "description": "Indicates exactly one field must be supplied and this field must not be `null`.",
+        "isRepeatable": false,
+        "locations": [
+          "INPUT_OBJECT"
+        ],
+        "args": []
       },
       {
         "name": "skip",
