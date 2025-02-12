@@ -130,21 +130,36 @@ export const FORBIDDEN_PATHS = [
   '/quotes'
 ]
 
-function isValidWalletAddressUrl(walletAddressUrl: string): boolean {
+function isValidWalletAddressUrl(
+  walletAddressUrl: string,
+  config: IAppConfig
+): boolean {
   try {
     const url = new URL(walletAddressUrl)
     if (url.protocol !== 'https:' || url.pathname === '/') {
       return false
     }
     for (const path of FORBIDDEN_PATHS) {
-      if (url.pathname.includes(path)) {
-        return false
-      }
+      if (url.pathname.includes(path)) return false
     }
-    return true
+    return !isWalletAddressInvalidPattern(walletAddressUrl, config)
   } catch (_) {
     return false
   }
+}
+
+function isWalletAddressInvalidPattern(
+  walletAddressUrl: string,
+  config: IAppConfig
+) {
+  if (
+    !config.excludedWalletAddressPatterns ||
+    config.excludedWalletAddressPatterns.length === 0
+  )
+    return false
+  return config.excludedWalletAddressPatterns.some((regex) =>
+    regex.test(walletAddressUrl)
+  )
 }
 
 function cleanAdditionalProperties(
@@ -163,7 +178,7 @@ async function createWalletAddress(
   deps: ServiceDependencies,
   options: CreateOptions
 ): Promise<WalletAddress | WalletAddressError> {
-  if (!isValidWalletAddressUrl(options.url)) {
+  if (!isValidWalletAddressUrl(options.url, deps.config)) {
     return WalletAddressError.InvalidUrl
   }
 
@@ -295,6 +310,8 @@ async function getOrPollByUrl(
   deps: ServiceDependencies,
   url: string
 ): Promise<WalletAddress | undefined> {
+  if (isWalletAddressInvalidPattern(url, deps.config)) return undefined
+
   const existingWalletAddress = await getWalletAddressByUrl(deps, url)
   if (existingWalletAddress) return existingWalletAddress
 
@@ -325,6 +342,8 @@ async function getWalletAddressByUrl(
   deps: ServiceDependencies,
   url: string
 ): Promise<WalletAddress | undefined> {
+  if (isWalletAddressInvalidPattern(url, deps.config)) return undefined
+
   const walletAddress = await WalletAddress.query(deps.knex).findOne({
     url: url.toLowerCase()
   })
@@ -340,7 +359,7 @@ async function getWalletAddressPage(
   pagination?: Pagination,
   sortOrder?: SortOrder
 ): Promise<WalletAddress[]> {
-  return await WalletAddress.query(deps.knex)
+  return WalletAddress.query(deps.knex)
     .getPage(pagination, sortOrder)
     .withGraphFetched('asset')
 }

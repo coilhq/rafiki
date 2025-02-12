@@ -38,7 +38,8 @@ describe('Open Payments Wallet Address Service', (): void => {
   beforeAll(async (): Promise<void> => {
     deps = initIocContainer({
       ...Config,
-      localCacheDuration: 0
+      localCacheDuration: 0,
+      excludedWalletAddressPatterns: [/favicon\.ico$/]
     })
     config = await deps.use('config')
     appContainer = await createTestApp(deps)
@@ -96,11 +97,13 @@ describe('Open Payments Wallet Address Service', (): void => {
     })
 
     test.each`
-      url                      | description
-      ${'not a url'}           | ${'without a valid url'}
-      ${'http://alice.me/pay'} | ${'with a non-https url'}
-      ${'https://alice.me'}    | ${'with a url without a path'}
-      ${'https://alice.me/'}   | ${'with a url without a path'}
+      url                                    | description
+      ${'not a url'}                         | ${'without a valid url'}
+      ${'http://alice.me/pay'}               | ${'with a non-https url'}
+      ${'https://alice.me'}                  | ${'with a url without a path'}
+      ${'https://alice.me/'}                 | ${'with a url without a path'}
+      ${'https://alice.me/favicon.ico'}      | ${'with a url using regex config'}
+      ${'https://alice.me/john/favicon.ico'} | ${'with a url with a path and regex config'}
     `(
       'Wallet address cannot be created $description ($url)',
       async ({ url }): Promise<void> => {
@@ -452,7 +455,7 @@ describe('Open Payments Wallet Address Service', (): void => {
     )
   })
 
-  describe('Get Or Poll Wallet Addres By Url', (): void => {
+  describe('Get Or Poll Wallet Address By Url', (): void => {
     describe('existing wallet address', (): void => {
       test('can retrieve wallet address by url', async (): Promise<void> => {
         const walletAddress = await createWalletAddress(deps)
@@ -483,6 +486,27 @@ describe('Open Payments Wallet Address Service', (): void => {
             expect(walletAddressNotFoundEvents[0]).toMatchObject({
               data: { walletAddressUrl }
             })
+          }
+        )
+      )
+
+      test(
+        'do not create wallet address not found event for invalid pattern',
+        withConfigOverride(
+          () => config,
+          { walletAddressLookupTimeoutMs: 0 },
+          async (): Promise<void> => {
+            const walletAddressUrl = `https://${faker.internet.domainName()}/.well-known/pay/favicon.ico`
+            await expect(
+              walletAddressService.getOrPollByUrl(walletAddressUrl)
+            ).resolves.toBeUndefined()
+
+            const walletAddressNotFoundEvents = await WalletAddressEvent.query(
+              knex
+            ).where({
+              type: WalletAddressEventType.WalletAddressNotFound
+            })
+            expect(walletAddressNotFoundEvents.length).toEqual(0)
           }
         )
       )

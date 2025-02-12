@@ -22,6 +22,15 @@ function envInt(name: string, value: number): number {
   return envValue == null ? value : parseInt(envValue)
 }
 
+function envRegExPatterns(name: string): RegExp[] {
+  const envValue = process.env[name]
+  return envValue == null || envValue.trim().length == 0
+    ? []
+    : envValue.split(',').map((pattern) => {
+        return new RegExp(pattern.trim())
+      })
+}
+
 function envFloat(name: string, value: number): number {
   const envValue = process.env[name]
   return envValue == null ? value : +envValue
@@ -192,7 +201,10 @@ export const Config = {
     'MAX_OUTGOING_PAYMENT_RETRY_ATTEMPTS',
     5
   ),
-  localCacheDuration: envInt('LOCAL_CACHE_DURATION_MS', 15_000)
+  localCacheDuration: envInt('LOCAL_CACHE_DURATION_MS', 15_000),
+  excludedWalletAddressPatterns: envRegExPatterns(
+    'EXCLUDED_WALLET_ADDRESS_PATTERNS'
+  )
 }
 
 function parseRedisTlsConfig(
