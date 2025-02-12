@@ -250,7 +250,8 @@ describe('LocalPaymentService', (): void => {
       const options: StartQuoteOptions = {
         walletAddress: walletAddressMap['USD'],
         receiver: await createReceiver(deps, walletAddressMap['USD'], {
-          incomingAmount
+          incomingAmount,
+          tenantId: Config.operatorTenantId
         })
       }
 

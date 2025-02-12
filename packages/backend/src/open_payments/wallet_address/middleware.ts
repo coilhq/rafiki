@@ -43,7 +43,8 @@ export async function getWalletAddressUrlFromIncomingPayment(
     'incomingPaymentService'
   )
   const incomingPayment = await incomingPaymentService.get({
-    id: ctx.params.id
+    id: ctx.params.id,
+    tenantId: ctx.params.tenantId
   })
 
   if (!incomingPayment?.walletAddress) {

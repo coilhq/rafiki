@@ -64,7 +64,8 @@ describe('Combined Payment Service', (): void => {
 
   async function setupPayments(deps: IocContract<AppServices>) {
     const incomingPayment = await createIncomingPayment(deps, {
-      walletAddressId: receiveWalletAddress.id
+      walletAddressId: receiveWalletAddress.id,
+      tenantId: Config.operatorTenantId
     })
     const receiverUrl = incomingPayment.getUrl(receiveWalletAddress)
 

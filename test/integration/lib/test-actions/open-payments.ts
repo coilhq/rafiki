@@ -123,6 +123,7 @@ async function grantRequestIncomingPayment(
 
 type CreateIncomingPaymentOpts = {
   amountValueToSend?: string
+  tenantId?: string
 }
 
 async function createIncomingPayment(
@@ -158,7 +159,7 @@ async function createIncomingPayment(
 
   const incomingPayment = await sendingASE.opClient.incomingPayment.create(
     {
-      url: urlWithoutTenantId(receiverWalletAddress.resourceServer),
+      url: receiverWalletAddress.resourceServer,
       accessToken
     },
     createInput

@@ -116,7 +116,7 @@ describe('Integration tests', (): void => {
         const incomingPayment = await createIncomingPayment(
           receiverWalletAddress,
           incomingPaymentGrant.access_token.value,
-          { amountValueToSend }
+          { amountValueToSend, tenantId: hlb.config.operatorTenantId }
         )
         const quoteGrant = await grantRequestQuote(senderWalletAddress)
         const quote = await createQuote(
@@ -193,7 +193,7 @@ describe('Integration tests', (): void => {
         const incomingPayment = await createIncomingPayment(
           receiverWalletAddress,
           incomingPaymentGrant.access_token.value,
-          { amountValueToSend }
+          { amountValueToSend, tenantId: hlb.config.operatorTenantId }
         )
         const quoteGrant = await grantRequestQuote(senderWalletAddress)
         const quote = await createQuote(
@@ -276,7 +276,8 @@ describe('Integration tests', (): void => {
         )
         const incomingPayment = await createIncomingPayment(
           receiverWalletAddress,
-          incomingPaymentGrant.access_token.value
+          incomingPaymentGrant.access_token.value,
+          { tenantId: hlb.config.operatorTenantId }
         )
 
         const outgoingPaymentGrant = await grantRequestOutgoingPayment(

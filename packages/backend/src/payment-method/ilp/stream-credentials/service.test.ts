@@ -31,7 +31,8 @@ describe('Stream Credentials Service', (): void => {
       tenantId: Config.operatorTenantId
     })
     incomingPayment = await createIncomingPayment(deps, {
-      walletAddressId
+      walletAddressId,
+      tenantId: Config.operatorTenantId
     })
   })
 

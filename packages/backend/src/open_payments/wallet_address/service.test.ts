@@ -250,7 +250,8 @@ describe('Open Payments Wallet Address Service', (): void => {
               metadata: {
                 description: 'Test incoming payment',
                 externalRef: '#123'
-              }
+              },
+              tenantId: Config.operatorTenantId
             })
 
             await walletAddressService.update({
@@ -294,7 +295,8 @@ describe('Open Payments Wallet Address Service', (): void => {
               metadata: {
                 description: 'Test incoming payment',
                 externalRef: '#123'
-              }
+              },
+              tenantId: Config.operatorTenantId
             })
 
             await walletAddressService.update({

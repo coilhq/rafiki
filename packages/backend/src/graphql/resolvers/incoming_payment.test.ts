@@ -38,6 +38,7 @@ describe('Incoming Payment Resolver', (): void => {
   let incomingPaymentService: IncomingPaymentService
   let accountingService: AccountingService
   let asset: Asset
+  let tenantId: string
 
   beforeAll(async (): Promise<void> => {
     deps = await initIocContainer(Config)
@@ -45,6 +46,7 @@ describe('Incoming Payment Resolver', (): void => {
     incomingPaymentService = await deps.use('incomingPaymentService')
     accountingService = await deps.use('accountingService')
     asset = await createAsset(deps)
+    tenantId = Config.operatorTenantId
   })
 
   afterAll(async (): Promise<void> => {
@@ -78,7 +80,8 @@ describe('Incoming Payment Resolver', (): void => {
           metadata: {
             description: `IncomingPayment`,
             externalRef: '#123'
-          }
+          },
+          tenantId
         }),
       pagedQuery: 'incomingPayments',
       parent: {
@@ -118,7 +121,8 @@ describe('Incoming Payment Resolver', (): void => {
           client,
           metadata,
           expiresAt,
-          incomingAmount
+          incomingAmount,
+          tenantId
         })
 
         const createSpy = jest
@@ -167,7 +171,7 @@ describe('Incoming Payment Resolver', (): void => {
               query.data?.createIncomingPayment
           )
 
-        expect(createSpy).toHaveBeenCalledWith(input)
+        expect(createSpy).toHaveBeenCalledWith({ ...input, tenantId })
         expect(query).toEqual({
           __typename: 'IncomingPaymentResponse',
           payment: {
@@ -237,7 +241,7 @@ describe('Incoming Payment Resolver', (): void => {
           })
         )
       }
-      expect(createSpy).toHaveBeenCalledWith(input)
+      expect(createSpy).toHaveBeenCalledWith({ ...input, tenantId })
     })
 
     test('Internal server error', async (): Promise<void> => {
@@ -282,7 +286,10 @@ describe('Incoming Payment Resolver', (): void => {
           })
         )
       }
-      expect(createSpy).toHaveBeenCalledWith(input)
+      expect(createSpy).toHaveBeenCalledWith({
+        ...input,
+        tenantId
+      })
     })
   })
 
@@ -299,7 +306,8 @@ describe('Incoming Payment Resolver', (): void => {
           value: BigInt(56),
           assetCode: asset.code,
           assetScale: asset.scale
-        }
+        },
+        tenantId
       })
     }
 
@@ -475,7 +483,8 @@ describe('Incoming Payment Resolver', (): void => {
           walletAddressId,
           metadata,
           expiresAt,
-          incomingAmount
+          incomingAmount,
+          tenantId
         })
         const input = {
           id: payment.id,
@@ -510,7 +519,7 @@ describe('Incoming Payment Resolver', (): void => {
               query.data?.updateIncomingPayment
           )
 
-        expect(createSpy).toHaveBeenCalledWith(input)
+        expect(createSpy).toHaveBeenCalledWith({ ...input, tenantId })
         expect(query).toEqual({
           __typename: 'IncomingPaymentResponse',
           payment: {
@@ -565,7 +574,7 @@ describe('Incoming Payment Resolver', (): void => {
           })
         )
       }
-      expect(createSpy).toHaveBeenCalledWith(input)
+      expect(createSpy).toHaveBeenCalledWith({ ...input, tenantId })
     })
 
     test('Internal server error', async (): Promise<void> => {
@@ -611,7 +620,7 @@ describe('Incoming Payment Resolver', (): void => {
           })
         )
       }
-      expect(createSpy).toHaveBeenCalledWith(input)
+      expect(createSpy).toHaveBeenCalledWith({ ...input, tenantId })
     })
   })
 })

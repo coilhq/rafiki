@@ -1759,7 +1759,8 @@ describe('Liquidity Resolvers', (): void => {
           assetCode: walletAddress.asset.code,
           assetScale: walletAddress.asset.scale
         },
-        expiresAt: new Date(Date.now() + 60 * 1000)
+        expiresAt: new Date(Date.now() + 60 * 1000),
+        tenantId: Config.operatorTenantId
       })
       payment = await createOutgoingPayment(deps, {
         walletAddressId,
@@ -2171,7 +2172,8 @@ describe('Liquidity Resolvers', (): void => {
           assetCode: walletAddress.asset.code,
           assetScale: walletAddress.asset.scale
         },
-        expiresAt: new Date(Date.now() + 60 * 1000)
+        expiresAt: new Date(Date.now() + 60 * 1000),
+        tenantId: Config.operatorTenantId
       })
       outgoingPayment = await createOutgoingPayment(deps, {
         walletAddressId,

@@ -10,8 +10,12 @@ export async function createIncomingPayment(
   deps: IocContract<AppServices>,
   options: CreateIncomingPaymentOptions
 ): Promise<IncomingPayment> {
+  const config = await deps.use('config')
   const incomingPaymentService = await deps.use('incomingPaymentService')
-  const incomingPaymentOrError = await incomingPaymentService.create(options)
+  const incomingPaymentOrError = await incomingPaymentService.create({
+    ...options,
+    tenantId: options.tenantId ?? config.operatorTenantId
+  })
   if (isIncomingPaymentError(incomingPaymentOrError)) {
     throw incomingPaymentOrError
   }

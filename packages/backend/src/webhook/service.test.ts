@@ -126,12 +126,14 @@ describe('Webhook Service', (): void => {
       incomingPaymentIds = [
         (
           await createIncomingPayment(deps, {
-            walletAddressId: walletAddressIn.id
+            walletAddressId: walletAddressIn.id,
+            tenantId: Config.operatorTenantId
           })
         ).id,
         (
           await createIncomingPayment(deps, {
-            walletAddressId: walletAddressIn.id
+            walletAddressId: walletAddressIn.id,
+            tenantId: Config.operatorTenantId
           })
         ).id
       ]

@@ -922,6 +922,8 @@ type IncomingPayment implements BasePayment & Model {
   metadata: JSONObject
   "The date and time that the incoming payment was created."
   createdAt: String!
+  "The tenant UUID associated with the incoming payment. If not provided, it will be obtained from the signature."
+  tenantId: String
 }
 
 type Receiver {

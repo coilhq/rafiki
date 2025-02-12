@@ -95,14 +95,16 @@ export const listSubresource = async <M extends WalletAddressSubresource>({
   const page = await getWalletAddressPage({
     walletAddressId: ctx.walletAddress.id,
     pagination,
-    client
+    client,
+    tenantId: ctx.params.tenantId
   })
   const pageInfo = await getPageInfo({
     getPage: (pagination) =>
       getWalletAddressPage({
         walletAddressId: ctx.walletAddress.id,
         pagination,
-        client
+        client,
+        tenantId: ctx.params.tenantId
       }),
     page,
     walletAddress: ctx.request.query['wallet-address']

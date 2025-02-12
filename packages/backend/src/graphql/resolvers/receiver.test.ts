@@ -106,7 +106,10 @@ describe('Receiver Resolver', (): void => {
           })
           .then((query): CreateReceiverResponse => query.data?.createReceiver)
 
-        expect(createSpy).toHaveBeenCalledWith(input)
+        expect(createSpy).toHaveBeenCalledWith({
+          ...input,
+          tenantId: Config.operatorTenantId
+        })
         expect(query).toEqual({
           __typename: 'CreateReceiverResponse',
           receiver: {
@@ -187,7 +190,10 @@ describe('Receiver Resolver', (): void => {
           })
         )
       }
-      expect(createSpy).toHaveBeenCalledWith(input)
+      expect(createSpy).toHaveBeenCalledWith({
+        ...input,
+        tenantId: Config.operatorTenantId
+      })
     })
 
     test('returns error if error thrown when creating receiver', async (): Promise<void> => {
@@ -244,7 +250,10 @@ describe('Receiver Resolver', (): void => {
           })
         )
       }
-      expect(createSpy).toHaveBeenCalledWith(input)
+      expect(createSpy).toHaveBeenCalledWith({
+        ...input,
+        tenantId: Config.operatorTenantId
+      })
     })
   })
 

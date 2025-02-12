@@ -42,7 +42,7 @@ script:pre-request {
 
 script:post-response {
   const body = res.getBody();
-
+  
   if (body?.id) {
     bru.setEnvVar("incomingPaymentId", body.id.split("/").pop());
   }

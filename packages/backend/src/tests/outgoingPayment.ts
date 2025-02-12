@@ -13,6 +13,7 @@ import { CreateIncomingPaymentOptions } from '../open_payments/payment/incoming/
 import { IncomingPayment } from '../open_payments/payment/incoming/model'
 import { createIncomingPayment } from './incomingPayment'
 import assert from 'assert'
+import { Config } from '../config/app'
 
 export type CreateTestQuoteAndOutgoingPaymentOptions = Omit<
   CreateOutgoingPaymentOptions & CreateTestQuoteOptions,
@@ -42,7 +43,9 @@ export async function createOutgoingPayment(
     const streamCredentials = streamServer.generateCredentials()
 
     const incomingPayment = await createIncomingPayment(deps, {
-      walletAddressId: options.walletAddressId
+      walletAddressId: options.walletAddressId,
+      // TODO: replace
+      tenantId: Config.operatorTenantId
     })
     await incomingPayment.$query().delete()
     const walletAddress = await walletAddressService.get(
@@ -115,7 +118,8 @@ export async function createOutgoingPaymentWithReceiver(
 
   const incomingPayment = await createIncomingPayment(deps, {
     ...args.incomingPaymentOptions,
-    walletAddressId: args.receivingWalletAddress.id
+    walletAddressId: args.receivingWalletAddress.id,
+    tenantId: Config.operatorTenantId
   })
 
   const streamCredentialsService = await deps.use('streamCredentialsService')

@@ -600,6 +600,8 @@ export type IncomingPayment = BasePayment & Model & {
   receivedAmount: Amount;
   /** State of the incoming payment. */
   state: IncomingPaymentState;
+  /** The tenant UUID associated with the incoming payment. If not provided, it will be obtained from the signature. */
+  tenantId?: Maybe<Scalars['String']['output']>;
   /** Unique identifier of the wallet address under which the incoming payment was created. */
   walletAddressId: Scalars['ID']['output'];
 };
@@ -2283,6 +2285,7 @@ export type IncomingPaymentResolvers<ContextType = any, ParentType extends Resol
   metadata?: Resolver<Maybe<ResolversTypes['JSONObject']>, ParentType, ContextType>;
   receivedAmount?: Resolver<ResolversTypes['Amount'], ParentType, ContextType>;
   state?: Resolver<ResolversTypes['IncomingPaymentState'], ParentType, ContextType>;
+  tenantId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   walletAddressId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

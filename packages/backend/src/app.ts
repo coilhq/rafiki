@@ -499,7 +499,7 @@ export class App {
     // POST /incoming-payments
     // Create incoming payment
     router.post<DefaultState, SignedCollectionContext<IncomingCreateBody>>(
-      '/incoming-payments',
+      '/:tenantId/incoming-payments',
       createValidatorMiddleware<
         ContextType<SignedCollectionContext<IncomingCreateBody>>
       >(
@@ -526,7 +526,7 @@ export class App {
       DefaultState,
       SignedCollectionContext<never, GetCollectionQuery>
     >(
-      '/incoming-payments',
+      '/:tenantId/incoming-payments',
       createValidatorMiddleware<
         ContextType<SignedCollectionContext<never, GetCollectionQuery>>
       >(
@@ -625,7 +625,7 @@ export class App {
     // GET /incoming-payments/{id}
     // Read incoming payment
     router.get<DefaultState, SubresourceContextWithAuthenticatedStatus>(
-      '/incoming-payments/:id',
+      '/:tenantId/incoming-payments/:id',
       createValidatorMiddleware<
         ContextType<SubresourceContextWithAuthenticatedStatus>
       >(
@@ -650,7 +650,7 @@ export class App {
     // POST /incoming-payments/{id}/complete
     // Complete incoming payment
     router.post<DefaultState, SignedSubresourceContext>(
-      '/incoming-payments/:id/complete',
+      '/:tenantId/incoming-payments/:id/complete',
       createValidatorMiddleware<ContextType<SignedSubresourceContext>>(
         resourceServerSpec,
         {

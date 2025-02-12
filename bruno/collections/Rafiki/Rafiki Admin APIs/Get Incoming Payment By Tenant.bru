@@ -1,0 +1,48 @@
+meta {
+  name: Get Incoming Payment By Tenant
+  type: graphql
+  seq: 54
+}
+
+post {
+  url: {{RafikiGraphqlHost}}/{{tenantId}}/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query GetIncomingPayment($id: String!) {
+  incomingPayment(id: $id) {
+      id
+      walletAddressId
+      client
+      state
+      expiresAt
+      incomingAmount {
+          value
+          assetCode
+          assetScale
+      }
+      receivedAmount {
+          value
+          assetCode
+          assetScale
+      }
+      metadata
+      createdAt
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+      "id": "{{incomingPaymentId}}",
+        "tenantId": "{{tenantId}}"
+  }
+}
+
+script:pre-request {
+  const scripts = require('./scripts');
+  
+  scripts.addApiSignatureHeader();
+}

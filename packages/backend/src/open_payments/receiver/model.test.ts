@@ -42,7 +42,8 @@ describe('Receiver Model', (): void => {
         tenantId: Config.operatorTenantId
       })
       const incomingPayment = await createIncomingPayment(deps, {
-        walletAddressId: walletAddress.id
+        walletAddressId: walletAddress.id,
+        tenantId: Config.operatorTenantId
       })
       const isLocal = true
 
@@ -88,7 +89,8 @@ describe('Receiver Model', (): void => {
         tenantId: Config.operatorTenantId
       })
       const incomingPayment = await createIncomingPayment(deps, {
-        walletAddressId: walletAddress.id
+        walletAddressId: walletAddress.id,
+        tenantId: Config.operatorTenantId
       })
 
       incomingPayment.state = IncomingPaymentState.Completed
@@ -113,7 +115,8 @@ describe('Receiver Model', (): void => {
         tenantId: Config.operatorTenantId
       })
       const incomingPayment = await createIncomingPayment(deps, {
-        walletAddressId: walletAddress.id
+        walletAddressId: walletAddress.id,
+        tenantId: Config.operatorTenantId
       })
 
       incomingPayment.expiresAt = new Date(Date.now() - 1)
@@ -135,7 +138,8 @@ describe('Receiver Model', (): void => {
         tenantId: Config.operatorTenantId
       })
       const incomingPayment = await createIncomingPayment(deps, {
-        walletAddressId: walletAddress.id
+        walletAddressId: walletAddress.id,
+        tenantId: Config.operatorTenantId
       })
 
       const streamCredentials = streamCredentialsService.get(incomingPayment)

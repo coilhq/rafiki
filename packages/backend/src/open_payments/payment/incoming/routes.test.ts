@@ -30,6 +30,7 @@ describe('Incoming Payment Routes', (): void => {
   let config: IAppConfig
   let incomingPaymentRoutes: IncomingPaymentRoutes
   let incomingPaymentService: IncomingPaymentService
+  let tenantId: string
 
   beforeAll(async (): Promise<void> => {
     config = Config
@@ -37,6 +38,7 @@ describe('Incoming Payment Routes', (): void => {
     appContainer = await createTestApp(deps)
     const { resourceServerSpec } = await deps.use('openApi')
     jestOpenAPI(resourceServerSpec)
+    tenantId = Config.operatorTenantId
   })
 
   let asset: Asset
@@ -54,7 +56,7 @@ describe('Incoming Payment Routes', (): void => {
     expiresAt = new Date(Date.now() + 30_000)
     asset = await createAsset(deps)
     walletAddress = await createWalletAddress(deps, {
-      tenantId: Config.operatorTenantId,
+      tenantId,
       assetId: asset.id
     })
     baseUrl = new URL(walletAddress.url).origin
@@ -86,7 +88,8 @@ describe('Incoming Payment Routes', (): void => {
           client,
           expiresAt,
           incomingAmount,
-          metadata
+          metadata,
+          tenantId
         }),
       get: (ctx) =>
         incomingPaymentRoutes.get(ctx as ReadContextWithAuthenticatedStatus),
@@ -129,10 +132,11 @@ describe('Incoming Payment Routes', (): void => {
       'returns incoming payment with empty methods if payment state is %s',
       async (paymentState): Promise<void> => {
         const walletAddress = await createWalletAddress(deps, {
-          tenantId: Config.operatorTenantId
+          tenantId
         })
         const incomingPayment = await createIncomingPayment(deps, {
-          walletAddressId: walletAddress.id
+          walletAddressId: walletAddress.id,
+          tenantId
         })
         await incomingPayment.$query().update({ state: paymentState })
 
@@ -153,7 +157,44 @@ describe('Incoming Payment Routes', (): void => {
         expect(ctx.response).toSatisfyApiSpec()
         expect(ctx.body).toMatchObject({ methods: [] })
       }
-    )
+    ),
+      test('by tenantId', async () => {
+        const walletAddress = await createWalletAddress(deps, {
+          tenantId
+        })
+        const incomingPayment = await createIncomingPayment(deps, {
+          walletAddressId: walletAddress.id,
+          tenantId
+        })
+
+        const ctx = setup<ReadContextWithAuthenticatedStatus>({
+          reqOpts: {
+            headers: { Accept: 'application/json' },
+            method: 'GET',
+            url: `/incoming-payments/${incomingPayment.id}`
+          },
+          params: {
+            id: incomingPayment.id,
+            tenantId
+          },
+          walletAddress
+        })
+
+        await expect(incomingPaymentRoutes.get(ctx)).resolves.toBeUndefined()
+
+        expect(ctx.response).toSatisfyApiSpec()
+        expect(ctx.body).toMatchObject({
+          methods: [
+            {
+              type: 'ilp',
+              ilpAddress: expect.stringMatching(
+                /^test\.rafiki\.[a-zA-Z0-9_-]{95}$/
+              ),
+              sharedSecret: expect.any(String)
+            }
+          ]
+        })
+      })
   })
 
   describe('create', (): void => {
@@ -172,7 +213,10 @@ describe('Incoming Payment Routes', (): void => {
       async (error): Promise<void> => {
         const ctx = setup<CreateContext<CreateBody>>({
           reqOpts: { body: {} },
-          walletAddress
+          walletAddress,
+          params: {
+            tenantId
+          }
         })
         const createSpy = jest
           .spyOn(incomingPaymentService, 'create')
@@ -182,7 +226,8 @@ describe('Incoming Payment Routes', (): void => {
           status: errorToHTTPCode[error]
         })
         expect(createSpy).toHaveBeenCalledWith({
-          walletAddressId: walletAddress.id
+          walletAddressId: walletAddress.id,
+          tenantId
         })
       }
     )
@@ -200,6 +245,9 @@ describe('Incoming Payment Routes', (): void => {
         expiresAt
       }): Promise<void> => {
         const ctx = setup<CreateContext<CreateBody>>({
+          params: {
+            tenantId
+          },
           reqOpts: {
             body: {
               incomingAmount: incomingAmount ? amount : undefined,
@@ -220,7 +268,8 @@ describe('Incoming Payment Routes', (): void => {
           incomingAmount: incomingAmount ? parseAmount(amount) : undefined,
           metadata,
           expiresAt: expiresAt ? new Date(expiresAt) : undefined,
-          client
+          client,
+          tenantId
         })
         expect(ctx.response).toSatisfyApiSpec()
         const incomingPaymentId = (
@@ -230,7 +279,7 @@ describe('Incoming Payment Routes', (): void => {
           .pop()
 
         expect(ctx.response.body).toEqual({
-          id: `${baseUrl}/incoming-payments/${incomingPaymentId}`,
+          id: `${baseUrl}/${tenantId}/incoming-payments/${incomingPaymentId}`,
           walletAddress: walletAddress.url,
           incomingAmount: incomingAmount ? amount : undefined,
           expiresAt: expiresAt || expect.any(String),
@@ -264,7 +313,8 @@ describe('Incoming Payment Routes', (): void => {
         walletAddressId: walletAddress.id,
         expiresAt,
         incomingAmount,
-        metadata
+        metadata,
+        tenantId
       })
     })
     test('returns 200 with an updated open payments incoming payment', async (): Promise<void> => {
@@ -275,7 +325,8 @@ describe('Incoming Payment Routes', (): void => {
           url: `/incoming-payments/${incomingPayment.id}/complete`
         },
         params: {
-          id: incomingPayment.id
+          id: incomingPayment.id,
+          tenantId
         },
         walletAddress
       })
@@ -309,7 +360,8 @@ describe('Incoming Payment Routes', (): void => {
         walletAddressId: walletAddress.id,
         expiresAt,
         incomingAmount,
-        metadata
+        metadata,
+        tenantId
       })
 
       const ctx = setup<ReadContextWithAuthenticatedStatus>({
@@ -319,7 +371,8 @@ describe('Incoming Payment Routes', (): void => {
           url: `/incoming-payments/${incomingPayment.id}`
         },
         params: {
-          id: incomingPayment.id
+          id: incomingPayment.id,
+          tenantId
         },
         walletAddress
       })
