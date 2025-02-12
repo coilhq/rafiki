@@ -17,6 +17,11 @@ export async function handleSending(
 ): Promise<void> {
   if (!payment.quote) throw LifecycleError.MissingQuote
 
+  // Check if the current time is greater than or equal to when the Quote should be expiring
+  if (Date.now() >= payment.quote.expiresAt.getTime()) {
+    throw LifecycleError.QuoteExpired
+  }
+
   const receiver = await deps.receiverService.get(payment.receiver)
 
   // TODO: Query TigerBeetle transfers by code to distinguish sending debits from withdrawals

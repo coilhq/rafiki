@@ -110,5 +110,8 @@ export enum LifecycleError {
   MissingBalance = 'MissingBalance',
   MissingQuote = 'MissingQuote',
   MissingExpiration = 'MissingExpiration',
-  Unauthorized = 'Unauthorized'
+  Unauthorized = 'Unauthorized',
+
+  // To be thrown when a Quote has expired
+  QuoteExpired = 'QuoteExpired'
 }
