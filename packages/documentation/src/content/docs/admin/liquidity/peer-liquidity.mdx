@@ -1,0 +1,109 @@
+---
+title: Peer liquidity
+tableOfContents:
+  maxHeadingLevel: 4
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components'
+import { CodeBlock, LinkOut } from '@interledger/docs-design-system'
+import IdempotencyNote from '/src/partials/liquidity-idempotency.mdx'
+
+Peer liquidity is the line of credit you extend to a peer, denominated in your agreed upon asset. A peer's liquidity account balance represents the amount of credit the peer still has available to them.
+
+A peer's liquidity increases when payments are made to the peer and decreases when payments are made from the peer. For example, if a customer of your peer sends your customer a payment of $20 USD, then your peer's liquidity account decreases by 20.
+
+If a peer’s liquidity is insufficient (e.g., they’ve used up their allotted credit line), transactions initiated from the peer will fail. Once a peer's liquidity is used up, you should settle with your peer and reset their liquidity. Deposit and withdraw peer liquidity as necessary, based on your risk profile.
+
+For more information about how Rafiki handles liquidity, see the [Accounting](/overview/concepts/accounting) concepts page and the [low peer liquidity](/integration/requirements/webhook-events#low-peer-liquidity) section of the webhook events page.
+
+## Manage peer liquidity using Rafiki Admin
+
+You can deposit and withdraw peer liquidity through the Rafiki Admin application's [Peers](/admin/admin-user-guide/#edit-peer) screen.
+
+## Manage peer liquidity using the Backend Admin API
+
+<IdempotencyNote />
+
+### Deposit peer liquidity
+
+<Tabs>
+  <TabItem label="Operation">
+  ```graphql wrap
+  mutation DepositPeerLiquidity($input: DepositPeerLiquidityInput!) {
+    depositPeerLiquidity(input: $input) {
+     success
+   }
+  }
+  ```
+  </TabItem>
+  <TabItem label="Arguments">
+  ```json
+  {
+    "input": {
+      "id": "a09b730d-8610-4fda-98fa-ec7acb19c775",
+      "peerId": "73158598-2e0c-4973-895e-aebd115af260",
+      "amount": "1000000",
+      "idempotencyKey": "a09b730d-8610-4fda-98fa-ec7acb19c775"
+    }
+  }
+  ```
+
+For more information about this mutation's input object, see [`DepositPeerLiquidityInput`](https://rafiki.dev/apis/graphql/backend/inputobjects/#depositpeerliquidityinput).
+
+  </TabItem>
+  <TabItem label="Response">
+  When a peer liquidity deposit is successful, `DepositPeerLiquidity` returns `true`.
+
+```json
+{
+  "data": {
+    "success": true
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Withdraw peer liquidity
+
+<Tabs>
+  <TabItem label="Operation">
+  ```graphql wrap
+  mutation CreatePeerLiquidityWithdrawal($input: CreatePeerLiquidityWithdrawalInput!) {
+    createPeerLiquidityWithdrawal(input: $input) {
+      success
+   }
+  }
+  ```
+  </TabItem>
+  <TabItem label="Arguments">
+  ```json
+  {
+    "input": {
+      "id": "421fae87-9a59-4217-9ff8-faf55ffab9c6",
+      "peerId": "73158598-2e0c-4973-895e-aebd115af260",
+      "amount": "100",
+      "idempotencyKey": "b97fd85a-126e-42ef-b40d-1a50a70ffa6f",
+      "timeoutSeconds": 0
+    }
+  }
+  ```
+
+For more information about this mutation's input object, see [`CreatePeerLiquidityWithdrawalInput`](https://rafiki.dev/apis/graphql/backend/inputobjects/#createpeerliquiditywithdrawalinput).
+
+  </TabItem>
+  <TabItem label="Response">
+
+When a peer liquidity withdrawal is successful, `CreatePeerLiquidityWithdrawal` returns `true`.
+
+```json
+{
+  "data": {
+    "success": true
+  }
+}
+```
+
+  </TabItem>
+</Tabs>

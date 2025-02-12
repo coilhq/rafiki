@@ -196,7 +196,7 @@ The configuration can be tested in our [Local Playground](/integration/playgroun
 #### Docker Compose config
 
 ```yaml
-#Serves as example for optional local collector configuration
+# Serves as example for optional local collector configuration
 happy-life-otel-collector:
   image: otel/opentelemetry-collector-contrib:latest
   command: ['--config=/etc/otel-collector-config.yaml', '']
@@ -217,7 +217,7 @@ happy-life-otel-collector:
 
 Supplemental documentation can be found in <LinkOut href="https://opentelemetry.io/docs/collector/configuration/">OTEL’s Collector Configuration</LinkOut> documentation.
 
-```yaml
+```yaml wrap
 # Serves as example for the configuration of a local OpenTelemetry Collector that sends metrics to an AWS Managed Prometheus Workspace
 # Sigv4auth required for AWS Prometheus Remote Write access (USER with access keys needed)
 

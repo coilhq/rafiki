@@ -1,7 +1,7 @@
 ---
 title: Accounting in Rafiki
 tableOfContents:
-  maxHeadingLevel: 4
+  maxHeadingLevel: 3
 ---
 
 import {
@@ -70,19 +70,21 @@ Liquidity accounts hold either a zero or a positive balance. Rafiki ensures that
 
 Asset liquidity ensures Rafiki has enough liquidity, denominated in a given asset, to handle cross-currency (foreign exchange) transactions.
 
-An asset liquidity account represents the value that Rafiki has available for sending or forwarding ILP packets. You have one asset liquidity account for each asset you transact in. The amount in an asset liquidity account increases when packets are received and decreases when packets are sent/forwarded. Any transaction that would result in a negative balance will fail.
+An asset liquidity account represents the value that Rafiki has available for sending or forwarding ILP packets. You have one asset liquidity account for each asset you transact in.
+
+Whenever an outgoing payment/incoming payment is in a different asset than the peering relationship, the liquidity of asset accounts will change depending on the FX direction. Any transaction that would result in a negative balance will fail.
 
 :::note
-If you and your peer transact in the same asset (there's no currency conversion) and you both provide your customers only with wallet addresses denominated in that asset, then there will be no movement into/from the corresponding asset liquidity account.
+If you and your peer transact in the same asset (there's no currency conversion) and you both provide your customers only with wallet addresses denominated in that asset, then there will be no movement into/from the corresponding asset's liquidity account.
 
 For example, you and your peer transact in USD and only provide your customers with USD wallet addresses. One of your customers sends \$10 to your peer's customer. There's no movement from your USD asset liquidity account because there was no currency conversion. There is, however, an [outgoing payment liquidity account](/overview/concepts/accounting#outgoing-payment-liquidity-accounts) created to support the transaction.
 :::
 
 You can add a liquidity threshold for each asset liquidity account via the [`updateAsset`](https://rafiki.dev/apis/graphql/backend/mutations/#updateasset) mutation's `liquidityThreshold` input argument.
 
-When a threshold is entered, the [`asset.liquidity_low`](/integration/requirements/webhook-events#asset-liquidity-low) webhook event will notify you if an asset account's liquidity drops below the threshold.
+When a threshold is entered, the [`asset.liquidity_low`](/integration/requirements/webhook-events#asset-liquidity-low) webhook event notifies you if an asset account's liquidity drops below the threshold.
 
-You should define and adjust asset liquidity based on your liquidity risk profile. You can deposit or withdraw asset liquidity as needed through [Rafiki Admin](/admin/admin-user-guide#edit-asset) or by using the [Backend Admin API](/admin/manage-liquidity#asset-liquidity).
+You should define and adjust asset liquidity based on your liquidity risk profile. You can deposit or withdraw asset liquidity as needed through [Rafiki Admin](/admin/admin-user-guide#edit-asset) or by using the [Backend Admin API](/admin/liquidity/asset-liquidity#manage-asset-liquidity-using-the-backend-admin-api).
 
 <details>
 <summary>Asset liquidity example - cross-currency transactions</summary>
@@ -130,9 +132,9 @@ If a peer’s liquidity is insufficient (e.g., they’ve used up their allotted 
 
 You can add a liquidity threshold for each peer liquidity account via the [`updatePeer`](https://rafiki.dev/apis/graphql/backend/mutations/#updatepeer) mutation's `liquidityThreshold` input argument.
 
-When a threshold is entered, the [`peer.liquidity_low`](/integration/requirements/webhook-events#peer-liquidity-low) webhook event will notify you if a peer's liquidity drops below the threshold.
+When a threshold is entered, the [`peer.liquidity_low`](/integration/requirements/webhook-events#peer-liquidity-low) webhook event notifies you if a peer's liquidity drops below the threshold.
 
-You should define and adjust each peer's liquidity based on your liquidity risk profile. You can deposit or withdraw peer liquidity as needed through [Rafiki Admin](/admin/admin-user-guide#edit-peer) or by using the [Backend Admin API](/admin/manage-liquidity#peer-liquidity).
+You should define and adjust each peer's liquidity based on your liquidity risk profile. You can deposit or withdraw peer liquidity as needed through [Rafiki Admin](/admin/admin-user-guide#edit-peer) or by using the [Backend Admin API](/admin/liquidity/peer-liquidity#manage-peer-liquidity-using-the-backend-admin-api).
 
 <details>
 <summary>Peer liquidity example</summary>
@@ -156,7 +158,7 @@ Payment liquidity is the amount that's available because of an incoming or outgo
 
 ##### Incoming payment liquidity accounts
 
-An incoming payment liquidity account represents the value received for an incoming payment. An incoming payment is created via an <LinkOut href="https://openpayments.dev/apis/resource-server/operations/create-incoming-payment/">Open Payments API</LinkOut>. When the first packet for the incoming payment is received, a corresponding liquidity account is automatically created. You will have one liquidity account per incoming payment.
+An incoming payment liquidity account represents the value received for an incoming payment. An incoming payment is created via <LinkOut href="https://openpayments.dev/apis/resource-server/operations/create-incoming-payment/">Open Payments</LinkOut>. When the first packet for the incoming payment is received, a corresponding liquidity account is automatically created. You will have one liquidity account per incoming payment.
 
 You are notified of created, completed, and expired incoming payments by listening for the appropriate [webhook events](/integration/requirements/webhook-events/#incoming-payments). Since Rafiki doesn't hold funds, anything you receive must be withdrawn and then credited to the recipient's account on your ledger.
 
@@ -164,7 +166,7 @@ The liquidity account isn’t used again after the payment completes, but its re
 
 ##### Outgoing payment liquidity accounts
 
-An outgoing payment liquidity account represents the value available to send in an outgoing payment. When an outgoing payment is created via the <LinkOut href="https://openpayments.dev/apis/resource-server/operations/create-outgoing-payment/">Open Payments API</LinkOut>, a corresponding liquidity account is automatically created. You will have one liquidity account per outgoing payment.
+An outgoing payment liquidity account represents the value available to send in an outgoing payment. When an outgoing payment is created via <LinkOut href="https://openpayments.dev/apis/resource-server/operations/create-outgoing-payment/">Open Payments</LinkOut>, a corresponding liquidity account is automatically created. You will have one liquidity account per outgoing payment.
 
 You are notified of created, completed, and failed outgoing payments by listening for the appropriate [webhook events](/integration/requirements/webhook-events/#outgoing-payments). Liquidity must be deposited into the outgoing payment account before the payment can be processed.
 
@@ -174,7 +176,7 @@ The account isn’t used again after the payment completes, but its record remai
 
 ##### Wallet address liquidity accounts
 
-A wallet address liquidity account contains the value received to a wallet address via SPSP. When an incoming payment is created, a corresponding liquidity account is automatically created. You will have one account per wallet address.
+A wallet address liquidity account contains the value received to a wallet address via [SPSP](/overview/concepts/interledger#simple-payment-setup-protocol-spsp). When an incoming payment is created, a corresponding liquidity account is automatically created. You will have one account per wallet address.
 
 Since Rafiki doesn’t hold funds, you must withdraw the liquidity when the payment completes and credit the funds to the recipient’s account on your ledger. You are notified to withdraw liquidity by listening for the appropriate [webhook event](/integration/requirements/webhook-events#wallet-addresses).
 
@@ -182,11 +184,11 @@ Unlike the incoming and outgoing payment liquidity accounts, the same wallet add
 
 ### Settlement accounts
 
-A settlement account represents the total funds, denominated in a specified asset, that you have deposited into Rafiki. You have one settlement account for each asset you transact in.
+A settlement account represents the total funds, denominated in a single asset, that you have deposited into Rafiki. You have one settlement account for each asset you transact in.
 
-Settlement accounts hold either a zero or a negative balance. A negative balance on a settlement account means you've deposited more funds into Rafiki than you've taken out.
+Settlement accounts hold either a zero or a negative balance. A negative balance on a settlement account means you've deposited more funds into Rafiki than you've withdrawn. The closer a settlement account's balance is to 0, the more likely it is you need to settle with your peer for the amount owed and then deposit the amount back into Rafiki.
 
-Rafiki ensures that the total credits to a settlement account will not exceed its total debits.
+Rafiki ensures that the total credits to a settlement account do not exceed its total debits.
 
 <details>
 <summary>Settlement account example</summary>
@@ -200,13 +202,11 @@ Now, your peer liquidity account's balance is \$9,900 and your USD settlement ac
 
 </details>
 
-A negative balance on a settlement account means you've deposited more funds into Rafiki than you've withdrawn. The closer a settlement account's balance is to 0, the more likely it is you need to settle with your peer for the amount owed and then deposit the amount back into Rafiki.
-
 ## Accounting databases
 
 ### TigerBeetle
 
-TigerBeetle is a high-performance distributed financial accounting database used by Rafiki’s backend service to store account balance data. Both liquidity and settlement accounts in Rafiki correspond to TigerBeetle credit and debit accounts, respectively.
+TigerBeetle is a high-performance distributed financial accounting database used by Rafiki’s [backend service](/integration/deployment/services/backend-service) to store account balance data. Both liquidity and settlement accounts in Rafiki correspond to TigerBeetle credit and debit accounts, respectively.
 
 TigerBeetle only holds balance data without any additional ILP packet metadata. For detailed information on TigerBeetle, including its consensus mechanism and its limitations, visit the official TigerBeetle <LinkOut href="https://docs.tigerbeetle.com/">documentation</LinkOut> and <LinkOut href="https://tigerbeetle.com/blog/">blog</LinkOut>. For more information about TigerBeetle in a production Rafiki environment, see [Running Rafiki in production](/integration/deployment/helm-k8s/#running-rafiki-in-production).
 
@@ -259,13 +259,18 @@ A two-phase transfer moves funds in two stages.
 
 The name two-phase transfer is a reference to the <LinkOut href="https://en.wikipedia.org/wiki/Two-phase_commit_protocol">two-phase commit protocol</LinkOut> for distributed transactions.
 
-### Transfer examples
+You can [post and commit](/admin/liquidity/two-phase-transfers#post-and-commit-a-successful-transfer) a successful two-phase transfer and [void and roll back](/admin/liquidity/two-phase-transfers#void-and-roll-back-an-unsuccessful-transfer) an unsuccessful two-phase transfer by using the Backend Admin API.
 
-#### Intra-Rafiki transfer examples
+### Intra-Rafiki transfer examples
 
 Remember that a settlement account will always have a zero or negative balance and a liquidity account will always have a zero or positive balance.
 
-<StylishHeader>Deposits</StylishHeader>
+- [Deposits](#deposits)
+- [Withdrawals](#withdrawals)
+- [Payments in the same asset](#payments-in-the-same-asset)
+- [Cross currency payments](#cross-currency-payments)
+
+#### Deposits
 
 A deposit is the act of debiting the settlement account and crediting the liquidity account.
 
@@ -392,7 +397,7 @@ A deposit is the act of debiting the settlement account and crediting the liquid
 
 <br />
 
-<StylishHeader>Withdrawals</StylishHeader>
+#### Withdrawals
 
 A withdrawal is the act of debiting the liquidity account and crediting the settlement account.
 
@@ -601,7 +606,7 @@ A withdrawal is the act of debiting the liquidity account and crediting the sett
 
 <br />
 
-<StylishHeader>Payments in the same asset</StylishHeader>
+#### Payments in the same asset
 
 **Example:** Sender consented to a payment of `14 USD` but the quote promised to deliver `15 USD`. The send amount is less than the receive amount.
 
@@ -713,7 +718,7 @@ A withdrawal is the act of debiting the liquidity account and crediting the sett
 
 <br />
 
-<StylishHeader>Cross currency payments</StylishHeader>
+#### Cross currency payments
 
 **Example:** Outgoing payment is for `10 USD`, incoming payment receives `9 EUR` after a currency exchange
 
@@ -787,13 +792,20 @@ A withdrawal is the act of debiting the liquidity account and crediting the sett
 
 <br />
 
-#### Interledger transfer examples
+### Interledger transfer examples
 
 In these examples, the sender and receiver do not have wallet addresses at the same Rafiki instance.
 
 Remember that a settlement account will always have a zero or negative balance and a liquidity account will always have a zero or positive balance.
 
-<StylishHeader>Sending connector - same asset</StylishHeader>
+- [Sending connector - same asset](#sending-connector---same-asset)
+- [Sending connector - cross currency](#sending-connector---cross-currency)
+- [Receiving connector - same asset](#receiving-connector---same-asset)
+- [Receiving connector - cross currency](#receiving-connector---cross-currency)
+- [Connector - same asset](#connector---same-asset)
+- [Connector - cross currency](#connector---cross-currency)
+
+#### Sending connector - same asset
 
 **Example:** Sender creates an outgoing payment for `100 USD` to an incoming payment in the same asset at a peer's Rafiki instance
 
@@ -836,7 +848,7 @@ Remember that a settlement account will always have a zero or negative balance a
 
 <br />
 
-<StylishHeader>Sending connector - cross currency</StylishHeader>
+#### Sending connector - cross currency
 
 **Example:** Sender creates an outgoing payment for `100 USD` to an incoming payment at a peer's Rafiki instance. The peering relationship is in EUR, so the payment is converted on the sending side.
 
@@ -910,7 +922,7 @@ Remember that a settlement account will always have a zero or negative balance a
 
 <br />
 
-<StylishHeader>Receiving connector - same asset</StylishHeader>
+#### Receiving connector - same asset
 
 **Example:** An incoming payment receives `100 USD` from an outgoing payment in the same asset at a peer's Rafiki instance.
 
@@ -953,7 +965,7 @@ Remember that a settlement account will always have a zero or negative balance a
 
 <br />
 
-<StylishHeader>Receiving connector - cross currency</StylishHeader>
+#### Receiving connector - cross currency
 
 **Example:** A Rafiki instance receives `10 USD` from a peer (peering relationship in USD) to be deposited in an incoming payment liquidity account denominated in EUR. The payment is converted to EUR and deposited.
 
@@ -1027,7 +1039,7 @@ Remember that a settlement account will always have a zero or negative balance a
 
 <br />
 
-<StylishHeader>Connector - same asset</StylishHeader>
+#### Connector - same asset
 
 **Example:** Rafiki forwards `10 USD` from peer A to peer B.
 
@@ -1070,7 +1082,7 @@ Remember that a settlement account will always have a zero or negative balance a
 
 <br />
 
-<StylishHeader>Connector - cross currency</StylishHeader>
+#### Connector - cross currency
 
 **Example:** Rafiki receives `100 USD` from peer A and forwards `90 EUR` to peer B.
 
